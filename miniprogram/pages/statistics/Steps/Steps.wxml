@@ -1,0 +1,62 @@
+<!--miniprogram/pages/finding/home/home.wxml-->
+<!-- <button class="cu-btn bg-green shadow bg-gradual-blue" bindtap="showModal" data-target="DrawerModalL">Left</button> -->
+<view class="{{backgroundColor}}">
+  <cu-custom bgColor="{{backgroundColor}}" isBack="{{true}}">
+    <view slot="backText">返回</view>
+    <view slot="content">主营业务分析</view>
+  </cu-custom>
+  <view class="cu-bar margin-top">
+    <view class="action" bindtap="showModal" data-target="DrawerModalL">
+      <text class="grey"></text>Hi，你来了！选一个你感兴趣的业务指标吧。
+    </view>
+    <view class="action" bindtap="showModal" data-target="DrawerModalL">
+      <view class="cu-item">
+        <text class="cuIcon-sort text-white"></text>
+      </view>
+    </view>
+  </view>
+
+  <view class="cu-card case {{isCard?'no-card':''}} margin-top">
+    <van-panel use-header-slot custom-class="margin-bottom">
+      <view slot="header">
+        <view class="cu-bar bg-white solid-bottom">
+          <view class='action'>
+            <text class='cuIcon-titles text-blue'></text> {{statis.title}}
+          </view>
+          <view hidden='{{!statis.showPeriod}}' class="cu-capsule radius margin-right">
+            <block wx:for="{{statis.period}}" wx:for-item="per" wx:for-index="perIdx" wx:key="perIdx">
+              <view class="cu-tag {{statis.showIdx==perIdx ? 'bg-blue' : 'line-blue'}}" bindtap='chooseDayOrMonth' data-stat="{{index}}" data-per="{{perIdx}}">
+                {{per.title}}
+              </view>
+            </block>
+          </view>
+        </view>
+      </view>
+      <view>
+        <view class="cu-item padding-sm radius shadow-wrap bg-white">
+          <view class="container" hidden='{{chartHidden}}'>
+            <view class="chart">
+              <canvas canvas-id="pieCanvas" class="canvas" style="height:300px; margin-right:5rpx" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler" bindlongpress='longPress'></canvas>
+            </view>
+            <view style="margin-top:30px;text-align:center">点击或拖动图片查看详细数据</view>
+          </view>
+          <view class="cu-list menu-avatar bg-blue">
+          </view>
+        </view>
+      </view>
+    </van-panel>
+  </view>
+
+</view>
+
+<view class="cu-modal drawer-modal justify-start {{modalName=='DrawerModalL'?'show':''}}" bindtap="hideModal">
+  <view class="cu-dialog basis-lg" catchtap style="top:{{CustomBar}}px;height:calc(100vh - {{CustomBar}}px)">
+    <view class="cu-list menu text-left">
+      <view class="cu-item arrow" wx:for="{{diagrams.length}}" wx:key bindtap="chooseDiagram" data-diag="{{diagrams[index]}}">
+        <view class="content">
+          <view>{{diagrams[index]}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

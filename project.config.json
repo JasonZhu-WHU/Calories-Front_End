@@ -1,6 +1,6 @@
 {
-	"miniprogramRoot": "miniprogram/",
-	"cloudfunctionRoot": "cloudfunctions/",
+	"description": "项目配置文件",
+  "miniprogramRoot": "/miniprogram",
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
@@ -9,8 +9,8 @@
 		"newFeature": true,
 		"enhance": true
 	},
-	"appid": "wxc8781da5409edd63",
-	"projectname": "%E9%A3%9F%E7%9F%A5%E9%81%93",
+	"appid": "wxfdbdf9572f3ae678",
+	"projectname": "食知道",
 	"libVersion": "2.8.1",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
@@ -30,13 +30,19 @@
 		"game": {
 			"list": []
 		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
 		"miniprogram": {
 			"current": 0,
 			"list": [
 				{
-					"id": -1,
-					"name": "db guide",
-					"pathName": "pages/databaseGuide/databaseGuide"
+					"id": 0,
+					"name": "Calories",
+					"pathName": "pages/statistics/Calories/Calories",
+					"query": "",
+					"scene": null
 				}
 			]
 		}
