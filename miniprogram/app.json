@@ -1,7 +1,11 @@
 {
   "pages": [
+    "pages/index/index",
     "pages/statistics/Calories/Calories",
-    "pages/statistics/Steps/Steps"
+    "pages/statistics/Steps/Steps",
+    "pages/my/my",
+    "pages/analysis/analysis",
+    "pages/shot/shot"
   ],
   "window": {
     "navigationBarBackgroundColor": "#03A9F4",

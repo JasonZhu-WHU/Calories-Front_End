@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "statistics": "/pages/analysis/analysis",
+    "my": "/pages/my/my",
+    "shot": "/pages/shot/shot"
+  }
+}
