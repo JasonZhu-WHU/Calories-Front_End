@@ -1,6 +1,6 @@
 {
 	"description": "项目配置文件",
-  "miniprogramRoot": "/miniprogram",
+	"miniprogramRoot": "miniprogram/",
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
@@ -10,7 +10,7 @@
 		"enhance": true
 	},
 	"appid": "wxfdbdf9572f3ae678",
-	"projectname": "食知道",
+	"projectname": "%E9%A3%9F%E7%9F%A5%E9%81%93",
 	"libVersion": "2.8.1",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},

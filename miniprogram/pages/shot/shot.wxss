@@ -1,1 +1,23 @@
 /* pages/shot/shot.wxss */
+.main{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height:500px;
+}
+.btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+#camara{
+  padding:65%;
+  size:large;
+}
+.tips{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  font-size: 20px;
+}

@@ -1,1 +1,10 @@
 <!--pages/shot/shot.wxml-->
+<view class="main">
+<button class="btn" bindtap="uploadPhoto">
+<text id="camara" class='cu-btn lines-yellow round lg shadow'><cover-image src="./camara.png"></cover-image></text>
+</button>
+
+</view>
+<view class="tips">
+<text>点 击 按 钮 识 别 食 物</text>
+</view>
