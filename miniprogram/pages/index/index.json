@@ -1,6 +1,6 @@
 {
   "usingComponents": {
-    "statistics": "/pages/analysis/analysis",
+    "analysis": "/pages/analysis/analysis",
     "my": "/pages/my/my",
     "shot": "/pages/shot/shot"
   }

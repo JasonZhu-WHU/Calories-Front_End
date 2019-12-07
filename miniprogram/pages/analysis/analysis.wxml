@@ -1,1 +1,65 @@
 <!--pages/analysis/analysis.wxml-->
+<view class="custom flex_center" style="padding-top:{{statusBarHeight}}px"></view>
+<view class="navigationBar_custom" style="padding-top:{{statusBarHeight}}px"><text class="nav-title">今日</text></view>
+
+<!-- 绿色底 -->
+<!-- <view class="card-under-bgcolor margin-top">
+<view class="margin-white"></view>
+<view class="at-center">
+  <view class="card-bgcolor"></view>
+</view>
+<view class="margin-white"></view>
+</view> -->
+
+<view class="cu-bar bg-white margin-top  solid-bottom">
+  <view class="action">
+    <text class="cuIcon-title text-green"></text>今日卡路里
+  </view>
+</view>
+<view class="card-under-bgcolor">
+  <view class="at-center">
+    <view class="card-bgcolor at-center">
+      <cover-view>放图表</cover-view>
+    </view>
+  </view>
+  <view class="margin-white"></view>
+</view>
+
+<view class="cu-bar bg-white margin-top  solid-bottom">
+  <view class="action">
+    <text class="cuIcon-title text-green"></text>今天你吃了啥
+  </view>
+</view>
+<view class="padding bg-white">
+  <view>放图表</view>
+</view>
+
+
+<view class="cu-bar bg-white margin-top  solid-bottom">
+  <view class="action">
+    <text class="cuIcon-title text-green"></text>今日建议
+  </view>
+</view>
+<view class="flex-row at-center bg-white">
+  <view style="width:20px;"></view>
+  <image src="../../images/running.png" style="width:50px;height:50px;"></image>
+  <view class="padding bg-white flex-column">
+    <view>今天已经走了{{todayStep}}步啦 ^ ~ ^</view>
+    <view class="margin-top">今天你吃了好多{{big_ratio_food}}呀，再多吃点{{small_ratio_food}}吧 ~ ~</view>
+  </view>
+</view>
+
+<view class="cu-bar bg-white margin-top  solid-bottom">
+  <view class="action">
+    <text class="cuIcon-title text-green"></text>猜你喜欢
+  </view>
+</view>
+<view class="flex-row wrap recommend-view">
+<view style="height:20px;width:100%;"></view>
+  <recommend wx:for="{{recommends}}" wx:key="key" imageSrc="{{item.imageSrc}}" foodName="{{item.foodName}}" caloPer="{{item.caloPer}}"></recommend>
+</view>
+
+
+<view class="bottom">
+  <view class="margin-top"><text class="bottom-text" decode="emsp">----&emsp;&emsp;&emsp;我是有底线的&emsp;&emsp;&emsp;----</text></view>
+</view>

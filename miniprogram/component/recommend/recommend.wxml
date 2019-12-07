@@ -1,0 +1,13 @@
+<!--component/recommend/recommend.wxml-->
+<view class="flex-row">
+<view style="width:15px;"></view>
+<view class="round-white flex-column" style="width:{{componentWidth}}px">
+  <image src="{{imageSrc}}" class="reccomendImage" mode="center"></image>
+  <view style="height:5px;"></view>
+  <text class="food-name">{{foodName}}</text>
+  <view style="height:3px;"></view>
+  <text class="calo-per">{{caloPer}}cal/100g</text>
+  <view style="height:30px;"></view>
+</view>
+<view style="width:15px"></view>
+</view>

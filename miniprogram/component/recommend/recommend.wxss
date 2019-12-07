@@ -1,0 +1,38 @@
+/* component/recommend/recommend.wxss */
+.round-white{
+  background-color: #ffffff;
+  border-radius: 7px;
+}
+
+.reccomendImage{
+  height:80px;
+  border-radius: 7px;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.food-name{
+  font-family: MingLiU;
+  font-size: 33rpx;
+  padding-left: 10px;
+  font-weight: 550;
+}
+
+.calo-per{
+  font-family: MingLiU;
+  font-size: 27rpx;
+  padding-left: 10px;
+  color: #777777;
+}
+
+.show-border{
+  border: 3rpx solid black;
+ }

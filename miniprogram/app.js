@@ -14,11 +14,16 @@ App({
         let custom = wx.getMenuButtonBoundingClientRect();
         this.globalData.Custom = custom;
         this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+        this.globalData.windowHeight=e.windowHeight;
+        this.globalData.windowWidth=e.windowWidth;
       }
     })
 
   },
   globalData: {
+    statusBarHeight: wx.getSystemInfoSync()['statusBarHeight'],
+    windowHeight:0,
+    windowWidth:0,
     requestHost: 'https://www.ourhost.cn', //记得更新服务器url
     ColorList: [{
       title: '嫣红',

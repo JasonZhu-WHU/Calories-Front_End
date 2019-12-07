@@ -1,1 +1,78 @@
-/* pages/analysis/analysis.wxss */
+.custom{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 45px;
+  background: #ffffff;
+  z-index: 999;
+}
+
+.navigationBar_custom{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 100%;
+  background: #ffffff;
+}
+
+.nav-title{
+  font-size: 40rpx;
+}
+
+.show-border{
+  border: 3rpx solid black;
+}
+
+.at-center{
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+}
+
+.card-bgcolor{
+  background-color: #E8F4D9;
+  width: 90%;
+  height: 100px;
+  border-radius: 6px;
+}
+
+.card-under-bgcolor{
+  background-color: #ffffff;
+}
+
+.margin-white{
+  background-color: #ffffff;
+  width: 100%;
+  height: 20px;
+}
+
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column{
+  display: flex;
+  flex-direction: column;
+}
+
+.wrap{
+  flex-wrap:wrap;
+}
+
+.recommend-view{
+  justify-content:space-between;
+  background-color: #ffffff;
+}
+
+.bottom{
+  height: 120px;
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-text{
+  color: #bbbbbb;
+}
