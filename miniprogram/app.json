@@ -1,8 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/statistics/Calories/Calories",
-    "pages/statistics/Steps/Steps",
     "pages/my/my",
     "pages/analysis/analysis",
     "pages/shot/shot"
@@ -16,6 +14,15 @@
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"
   },
+  "subpackages": [
+    {
+      "root": "pages/statistics/",
+      "pages": [
+        "pages/Calories/Calories",
+        "pages/Steps/Steps"
+      ]
+    }
+  ],
   "sitemapLocation": "sitemap.json",
   "style": "v2"
 }
