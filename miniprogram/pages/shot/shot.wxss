@@ -4,16 +4,23 @@
   justify-content: center;
   align-items: center;
   height:500px;
+ 
 }
 .btn{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+ 
+ width:40%;
+  height: 35%;
   
 }
 #camara{
-  padding:65%;
-  size:large;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:50%;
+  height:40%;
+  border-radius: 100%;
+  border:5px solid rgba(65, 173, 65, 0.685)
+
 }
 .tips{
   display: flex;

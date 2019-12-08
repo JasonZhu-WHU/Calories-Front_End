@@ -1,8 +1,14 @@
 <!--pages/shot/shot.wxml-->
 <view class="main">
-<button class="btn" bindtap="uploadPhoto">
-<text id="camara" class='cu-btn lines-green round lg shadow'><image src="../../images/camara.png"></image></text>
-</button>
+<view class="padding solid{{size?'s':''}}" id="camara">
+<image class="btn" bindtap="actionSheetTap"  src="../../images/camara.png" ></image>
+</view>
+<action-sheet hidden="{{actionSheetHidden}}" bindchange="actionSheetbindchange">
+  <block wx:for-items="{{actionSheetItems}}">
+    <action-sheet-item bindtap="bind{{item.bindtap}}">{{item.txt}}</action-sheet-item>
+  </block>
+  <action-sheet-cancel class="cancel">取消</action-sheet-cancel>
+</action-sheet>
 
 </view>
 <view class="tips">
