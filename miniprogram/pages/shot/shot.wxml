@@ -1,14 +1,9 @@
 <!--pages/shot/shot.wxml-->
 <view class="main">
 <view class="padding solid{{size?'s':''}}" id="camara">
-<image class="btn" bindtap="actionSheetTap"  src="../../images/camara.png" ></image>
+<image class="btn" bindtap="clickpics"  src="../../images/camara.png" ></image>
 </view>
-<action-sheet hidden="{{actionSheetHidden}}" bindchange="actionSheetbindchange">
-  <block wx:for-items="{{actionSheetItems}}">
-    <action-sheet-item bindtap="bind{{item.bindtap}}">{{item.txt}}</action-sheet-item>
-  </block>
-  <action-sheet-cancel class="cancel">取消</action-sheet-cancel>
-</action-sheet>
+
 
 </view>
 <view class="tips">

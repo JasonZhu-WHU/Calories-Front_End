@@ -7,21 +7,13 @@ Page({
   data: {
     carWin_img_hidden: true, //展示照片的view是否隐藏
     carWin_img: '' ,//存放照片路径的
-    actionSheetHidden:true,
-    actionSheetItems:[
-      {bindtap:'camara',txt:'相机'},
-      {bindtap:'album',txt:'从相册中选取' },
-      
-    ],
-   
-    
+    resultBase64ImageB:'',//转成编码
   },
-  clickpics: function (way) {
+  clickpics: function () {
     var that = this;
     wx.chooseImage({
       count: 1,
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: way, // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
         // 无论用户是从相册选择还是直接用相机拍摄，路径都是在这里面
         var filePath = res.tempFilePaths[0];
@@ -32,36 +24,34 @@ Page({
         });
       }
     })
-  },
-  actionSheetTap: function () {
-
-    this.setData({
-
-      actionSheetHidden: !this.data.actionSheetHidden
-
+    wx.getFileSystemManager().readFile({
+      filePath: this.carWin_img, //选择图片返回的相对路径
+      encoding: 'base64', //编码格式
+      success: resultBase => { //成功的回调
+        that.setData({
+          resultBase64ImageB: resultBase.data
+        });
+      }
     })
-
+   
+    this.analysis()
   },
-  actionSheetbindchange: function () {
-    this.setData({
-      actionSheetHidden: !this.data.actionSheetHidden
-    })
+  analysis:function(){
+    //调用接口返回识别内容
+    var access_token = "24.d86fa2092e41a9897f6e64efd77f1c36.2592000.1578540493.282335-17974307"
+   
+   wx.request({
+     url: 'https://aip.baidubce.com/rest/2.0/image-classify/v2/dish?access_token=24.d86fa2092e41a9897f6e64efd77f1c36.2592000.1578540493.282335-17974307',
+     header: {'content-type':'application/x-www-form-urlencoded'},
+     method:'POST',
+     data:{
+       image: encoding(this.resultBase64ImageB)
+     },
+     success:function(res){
+       console.log(res.data);
+     }
+   })
   },
-  bindcamara: function () {
-    var way = "camera";
-    this.setData({
-      actionSheetHidden: !this.data.actionSheetHidden
-    });
-    this.clickpics(way);
-  },
-  bindalbum: function () {
-    this.setData({
-      way:"album",
-      actionSheetHidden: !this.data.actionSheetHidden
-    });
-    this.clickpics(way);
-  },
-  
   /**
    * 生命周期函数--监听页面加载
    */
