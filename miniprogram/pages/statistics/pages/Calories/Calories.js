@@ -1,5 +1,5 @@
 // miniprogram/pages/finding/home/home.js
-var wxCharts = require('../../../ec-canvas/wxcharts-min.js');
+var wxCharts = require('../../../../ec-canvas/wxcharts-min.js');
 var app = getApp();
 const host = app.globalData.requestHost
 var pieChart = null;
@@ -20,7 +20,7 @@ Page({
     backgroundColor: '',
     statis:
     {
-      title: '营业收入分析',
+      title: '卡路里摄入',
       showPeriod: true,
       period: [
         {
@@ -42,22 +42,22 @@ Page({
     ],
     month: 0,
     chartHidden: false,
-    diagrams: ['营业收入', '营业支出', '营业利润', '利润总额', '净利润', '毛利率', '净利率'],
+    diagrams: ['卡路里摄入', '运动步数'],
     curr_time: '本年',
     totalRecords: [],
     monthChoosed: 0,
-    curr_diagram: '营业收入',
+    curr_diagram: '卡路里摄入',
     CustomBar: app.globalData.CustomBar,
   },
   touchHandler: function (e) {
     console.log(this.data)
     var that = this
     if (chartType == 'pie') {
-      if (this.data.curr_diagram == '营业收入') {
-        var intro_text = '总营业收入为'
+      if (this.data.curr_diagram == '卡路里摄入') {
+        var intro_text = '卡路里摄入为'
       }
-      else if (this.data.curr_diagram == '营业支出') {
-        var intro_text = '总营业支出为'
+      else if (this.data.curr_diagram == '运动步数') {
+        var intro_text = '运动步数为'
       }
       wx.showModal({
         content: arr[pieChart.getCurrentDataIndex(e)].name + intro_text + arr[pieChart.getCurrentDataIndex(e)].data + '元',
@@ -107,203 +107,8 @@ Page({
     });
   },
 
-  longPress: function (e) {
-    var that = this
-    console.log('longPress')
-    console.log(this.data.curr_diagram)
-    console.log(this.data.curr_time)
-    if (this.data.curr_diagram == '营业收入'){
-      if (this.data.curr_time == '本年') {
-        //处理成2019-09类型字符串
-        if (parseInt(this.data.monthChoosed) < 10) {
-          var searchValue = String(curr_year) + '-0' + String(this.data.monthChoosed)
-        }
-        else{
-          var searchValue = String(curr_year) + '-' + String(this.data.monthChoosed)
-        }
-        wx.navigateTo({
-          url: '/pages/application/pages/sellList/sellList',
-          success: function (res) {
-            console.log(searchValue)
-            that.setData({
-              e: {
-                type: "input",
-                timeStamp: 1567943215368,
-                detail: {
-                  value: searchValue,
-                  cursor: 10,
-                  keyCode: 49
-                },
-                target: {
-                  id: "",
-                  dataset: {},
-                  offsetTop: 9,
-                  offsetLeft: 43
-                },
-                currentTarget: {
-                  id: "",
-                  dataset: {},
-                  offsetTop: 9,
-                  offsetLeft: 43
-                },
-                touches: [],
-                type: "input",
-                __proto__: Object
-              },
-              searchValue: searchValue
-            })
-          }
-        })
-      }
-      else if (this.data.curr_time == '本月') {
-        //处理成2019-09-01类型字符串
-        if (parseInt(curr_month) < 10 & parseInt(this.data.monthChoosed) < 10) {
-          var searchValue = String(curr_year) + '-0' + curr_month + '-0' + String(this.data.monthChoosed)
-        }
-        else if (parseInt(curr_month) < 10 & parseInt(this.data.monthChoosed) >= 10) {
-          var searchValue = String(curr_year) + '-0' + curr_month + '-' + String(this.data.monthChoosed)
-        }
-        else if (parseInt(curr_month) >= 10 & parseInt(this.data.monthChoosed) >= 10) {
-          var searchValue = String(curr_year) + '-' + curr_month + '-' + String(this.data.monthChoosed)
-        }
-        else if (parseInt(curr_month) >= 10 || parseInt(this.data.monthChoosed) < 10) {
-          var searchValue = String(curr_year) + '-' + curr_month + '-0' + String(this.data.monthChoosed)
-        }
-        wx.navigateTo({
-          url: '/pages/application/pages/sellList/sellList',
-          success: function (res) {
-            console.log(searchValue)
-            that.setData({
-              e: {
-                type: "input",
-                timeStamp: 1567943215368,
-                detail: {
-                  value: searchValue,
-                  cursor: 10,
-                  keyCode: 49
-                },
-                target: {
-                  id: "",
-                  dataset: {},
-                  offsetTop: 9,
-                  offsetLeft: 43
-                },
-                currentTarget: {
-                  id: "",
-                  dataset: {},
-                  offsetTop: 9,
-                  offsetLeft: 43
-                },
-                touches: [],
-                type: "input",
-                __proto__: Object
-              },
-              searchValue: searchValue
-            })
-          }
-        })
-      }
-    }
-    else if (this.data.curr_diagram == '营业支出'){
-      console.log('应该没问题')
-      if (this.data.curr_time == '本年') {
-        //处理成2019-09类型字符串
-        if (parseInt(this.data.monthChoosed) < 10) {
-          var searchValue = String(curr_year) + '-0' + String(this.data.monthChoosed)
-        }
-        else {
-          var searchValue = String(curr_year) + '-' + String(this.data.monthChoosed)
-        }
-        wx.navigateTo({
-          url: '/pages/application/pages/buyList/buyList?query=purchaseL',
-          success: function (res) {
-            console.log(searchValue)
-            that.setData({
-              e: {
-                type: "input",
-                timeStamp: 1568081218520,
-                detail: {
-                  value: searchValue,
-                  cursor: 7,
-                  keyCode: 56
-                },
-                target: {
-                  id: "",
-                  offsetTop: 9,
-                  offsetLeft: 43
-                },
-                currentTarget: {
-                  id: "",
-                  dataset: {},
-                  offsetTop: 9,
-                  offsetLeft: 43
-                },
-                touches: [],
-                type: "input",
-                __proto__: Object
-              },
-              searchValue: searchValue
-            })
-          }
-        })
-      }
-      else if (this.data.curr_time == '本月') {
-        //处理成2019-09-01类型字符串
-        if (parseInt(curr_month) < 10 & parseInt(this.data.monthChoosed) < 10) {
-          var searchValue = String(curr_year) + '-0' + curr_month + '-0' + String(this.data.monthChoosed)
-        }
-        else if (parseInt(curr_month) < 10 & parseInt(this.data.monthChoosed) >= 10) {
-          var searchValue = String(curr_year) + '-0' + curr_month + '-' + String(this.data.monthChoosed)
-        }
-        else if (parseInt(curr_month) >= 10 & parseInt(this.data.monthChoosed) >= 10) {
-          var searchValue = String(curr_year) + '-' + curr_month + '-' + String(this.data.monthChoosed)
-        }
-        else if (parseInt(curr_month) >= 10 || parseInt(this.data.monthChoosed) < 10) {
-          var searchValue = String(curr_year) + '-' + curr_month + '-0' + String(this.data.monthChoosed)
-        }
-        wx.navigateTo({
-          url: '/pages/application/pages/buyList/buyList?query=purchaseL',
-          success: function (res) {
-            console.log(searchValue)
-            that.setData({
-              e: {
-                type: "input",
-                timeStamp: 1567943215368,
-                detail: {
-                  value: searchValue,
-                  cursor: 10,
-                  keyCode: 49
-                },
-                target: {
-                  id: "",
-                  dataset: {},
-                  offsetTop: 9,
-                  offsetLeft: 43
-                },
-                currentTarget: {
-                  id: "",
-                  dataset: {},
-                  offsetTop: 9,
-                  offsetLeft: 43
-                },
-                touches: [],
-                type: "input",
-                __proto__: Object
-              },
-              searchValue: searchValue
-            })
-          }
-        })
-      }
-    }
-    else{
-      //do nothing
-    }
-  },
-
   drawDiagram: function (diagram, year = 0, month = 0) {
     console.log("开始画图！")
-    // let token = app.getToken()
     var categories = [];
     var data = [];
     var time = [];
@@ -316,24 +121,30 @@ Page({
     } catch (e) {
       console.error('getSystemInfoSync failed!');
     }
-    if (token) {
-      if (diagram == '营业支出') {
-        var food_arr = [];
-        var daily_goods_arr = [];
-        var other_goods_arr = [];
-        var childclothes_goods_arr = [];
-        var nutrients_goods_arr = [];
-        var play_goods_arr = [];
+    if (year != 0) {
+      if (diagram == '卡路里摄入') {
+        var calories_arr = [];
+        var days_array = [];
+        var d2 = new Date();
+        var d1 = new Date(d2);
+        d1.setDate(d2.getDate() - 7);
+        // var startDate = d1.getFullYear() + "-" + (d1.getMonth() + 1) + "-" + d1.getDate();
+        // var endDate = d2.getFullYear() + "-" + (d2.getMonth() + 1) + "-" + d2.getDate();
+        console.log(d1);
+        console.log(d2);
         chartType = 'line'
         wx.request({
-          url: host + '/data/getOperatingExpenditureByYear',
+          url: host + '/food/everyday',
           data: JSON.stringify({
-            year: year
+            openId: "test",
+            reqParam:{
+              startTime: d1,
+              endTime: d2
+            }
           }),
           method: "POST",
           header: {
             'Content-Type': 'application/json',
-            'Authorization': token
           },
           success: res => {
             console.log(res.data.result)
@@ -444,7 +255,7 @@ Page({
           }
         })
       }
-      else if (diagram == '营业收入') {
+      else if (diagram == '运动步数') {
         chartType = 'line'
         console.log('开始画营业收入的图')
         var food_arr = [];
@@ -587,284 +398,6 @@ Page({
           }
         })
       }
-      else if (diagram == '营业利润') {
-        chartType = 'line'
-        wx.request({
-          url: host + '/data/getOperatingProfits',
-          method: "GET",
-          header: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          },
-          success: res => {
-            console.log(res.data.result)
-            categories = []
-            data = []
-            for (var k in res.data.result) {
-              categories.push(k)
-              data.push(res.data.result[k])
-            }
-            console.log(categories)
-            console.log(data)
-            this.setData({
-              statis:
-              {
-                title: '营业利润分析',
-                showPeriod: false
-              }
-            })
-            pieChart = new wxCharts({
-              canvasId: 'pieCanvas',
-              type: 'line',
-              categories: categories,
-              animation: false,
-              series: [{
-                name: '营业利润',
-                data: data,
-                format: function (val, name) {
-                  return parseFloat(val).toFixed(2) + '元';
-                }
-              }],
-              width: windowWidth * 0.8,
-              height: 300,
-              dataLabel: true,
-              dataPointShape: true,
-              enableScroll: true,
-              extra: {
-                lineStyle: 'curve'
-              }
-            });
-          },
-          fail: res => {
-            console.error("未成功获取到营业利润数据")
-          },
-          complete: res => {
-            wx.hideLoading()
-          }
-        })
-      }
-      else if (diagram == '利润总额') {
-        chartType = 'line'
-        wx.request({
-          url: host + '/data/getTotalProfits',
-          method: "GET",
-          header: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          },
-          success: res => {
-            console.log(res.data.result)
-            for (var k in res.data.result) {
-              categories.push(k)
-              data.push(res.data.result[k])
-            }
-            console.log(categories)
-            console.log(data)
-            this.setData({
-              statis:
-              {
-                title: '利润总额分析',
-                showPeriod: false
-              }
-            })
-            pieChart = new wxCharts({
-              canvasId: 'pieCanvas',
-              type: 'line',
-              categories: categories,
-              animation: false,
-              series: [{
-                name: '利润总额',
-                data: data,
-                format: function (val, name) {
-                  return parseFloat(val).toFixed(2) + '元';
-                }
-              }],
-              width: windowWidth * 0.8,
-              height: 300,
-              dataLabel: true,
-              dataPointShape: true,
-              enableScroll: true,
-              extra: {
-                lineStyle: 'curve'
-              }
-            });
-          },
-          fail: res => {
-            console.error("未成功获取到利润总额数据")
-          },
-          complete: res => {
-            wx.hideLoading()
-          }
-        })
-      }
-      else if (diagram == '净利润') {
-        chartType = 'line'
-        wx.request({
-          url: host + '/data/getNetProfit',
-          method: "GET",
-          header: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          },
-          success: res => {
-            categories = []
-            data = []
-            console.log(res.data.result)
-            for (var k in res.data.result) {
-              categories.push(k)
-              data.push(res.data.result[k])
-            }
-            console.log(categories)
-            console.log(data)
-            this.setData({
-              statis:
-              {
-                title: '净利润分析',
-                showPeriod: false
-              }
-            })
-            pieChart = new wxCharts({
-              canvasId: 'pieCanvas',
-              type: 'line',
-              categories: categories,
-              animation: false,
-              series: [{
-                name: '净利润',
-                data: data,
-                format: function (val, name) {
-                  return parseFloat(val).toFixed(2) + '元';
-                }
-              }],
-              width: windowWidth * 0.8,
-              height: 300,
-              dataLabel: true,
-              dataPointShape: true,
-              enableScroll: true,
-              extra: {
-                lineStyle: 'curve'
-              }
-            });
-          },
-          fail: res => {
-            console.error("未成功获取到利润数据")
-          },
-          complete: res => {
-            wx.hideLoading()
-          }
-        })
-      }
-      else if (diagram == '毛利率') {
-        chartType = 'line'
-        wx.request({
-          url: host + '/data/getGrossProfitRate',
-          method: "GET",
-          header: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          },
-          success: res => {
-            console.log(res.data.result)
-            categories = []
-            data = []
-            for (var k in res.data.result) {
-              categories.push(k)
-              data.push(res.data.result[k])
-            }
-            console.log(categories)
-            console.log(data)
-            this.setData({
-              statis:
-              {
-                title: '毛利率分析',
-                showPeriod: false
-              }
-            })
-            pieChart = new wxCharts({
-              canvasId: 'pieCanvas',
-              type: 'line',
-              categories: categories,
-              animation: false,
-              series: [{
-                name: '毛利率',
-                data: data,
-                format: function (val, name) {
-                  return parseFloat(val).toFixed(2) + '%';
-                }
-              }],
-              width: windowWidth * 0.8,
-              height: 300,
-              dataLabel: true,
-              dataPointShape: true,
-              enableScroll: true,
-              extra: {
-                lineStyle: 'curve'
-              }
-            });
-          },
-          fail: res => {
-            console.error("未成功获取到毛利率")
-          },
-          complete: res => {
-            wx.hideLoading()
-          }
-        })
-      }
-      else if (diagram == '净利率') {
-        chartType = 'line'
-        wx.request({
-          url: host + '/data/getNetProfitRate',
-          method: "GET",
-          header: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-          },
-          success: res => {
-            console.log(res.data.result)
-            categories = []
-            data = []
-            for (var k in res.data.result) {
-              categories.push(k)
-              data.push(res.data.result[k])
-            }
-            console.log(categories)
-            console.log(data)
-            this.setData({
-              statis:
-              {
-                title: '净利率分析',
-                showPeriod: false
-              }
-            })
-            pieChart = new wxCharts({
-              canvasId: 'pieCanvas',
-              type: 'line',
-              categories: categories,
-              animation: false,
-              series: [{
-                name: '净利率',
-                data: data,
-                format: function (val) {
-                  return parseFloat(val).toFixed(2) + '%';
-                }
-              }],
-              width: windowWidth * 0.8          ,
-              height: 300,
-              dataLabel: true,
-              dataPointShape: true,
-              enableScroll: true,
-              extra: {
-                lineStyle: 'curve'
-              }
-            });
-          },
-          fail: res => {
-            console.error("未成功获取到净利率")
-          },
-          complete: res => {
-            wx.hideLoading()
-          }
-        })
-      }
       else {
         console.log("Not implemented yet!")
         complete: res => {
@@ -889,7 +422,7 @@ Page({
       mask: true
     })
     setTimeout(() => {
-      // this.drawDiagram('营业收入', 2019)
+      this.drawDiagram('卡路里摄入', 2019)
     }, 1500)
   },
 

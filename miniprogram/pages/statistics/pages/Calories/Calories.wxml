@@ -36,7 +36,7 @@
         <view class="cu-item padding-sm radius shadow-wrap bg-white">
           <view class="container" hidden='{{chartHidden}}'>
             <view class="chart">
-              <canvas canvas-id="pieCanvas" class="canvas" style="height:300px; margin-right:5rpx" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler" bindlongpress='longPress'></canvas>
+              <canvas canvas-id="pieCanvas" class="canvas" style="height:300px; margin-right:5rpx" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
             </view>
             <view style="margin-top:30px;text-align:center">点击或拖动图片查看详细数据</view>
           </view>

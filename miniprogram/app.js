@@ -24,7 +24,7 @@ App({
     statusBarHeight: wx.getSystemInfoSync()['statusBarHeight'],
     windowHeight:0,
     windowWidth:0,
-    requestHost: 'https://www.ourhost.cn', //记得更新服务器url
+    requestHost: 'https://csquare.wang', //记得更新服务器url
     ColorList: [{
       title: '嫣红',
       name: 'red',

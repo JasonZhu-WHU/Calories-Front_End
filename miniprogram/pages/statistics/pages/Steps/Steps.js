@@ -1,5 +1,5 @@
 // miniprogram/pages/finding/home/home.js
-var wxCharts = require('../../../ec-canvas/wxcharts-min.js');
+var wxCharts = require('../../../../ec-canvas/wxcharts-min.js');
 var app = getApp();
 const host = app.globalData.requestHost
 var pieChart = null;
