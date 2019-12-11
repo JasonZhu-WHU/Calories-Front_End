@@ -1,6 +1,8 @@
-<!--pages/analysis/analysis.wxml-->
+<!-- pages/analysis/analysis.wxml -->
 <view class="custom flex_center" style="padding-top:{{statusBarHeight}}px"></view>
-<view class="navigationBar_custom" style="padding-top:{{statusBarHeight}}px"><text class="nav-title">今日</text></view>
+<view class="navigationBar_custom" style="padding-top:{{statusBarHeight}}px">
+  <text class="nav-title">今日</text>
+</view>
 
 <!-- 绿色底 -->
 <!-- <view class="card-under-bgcolor margin-top">
@@ -19,7 +21,10 @@
 <view class="card-under-bgcolor">
   <view class="at-center">
     <view class="card-bgcolor at-center">
-      <cover-view>放图表</cover-view>
+      <!-- <cover-view>放图表</cover-view> -->
+      <view class="container">
+        <canvas canvas-id="chartCanvas" class="canvas" style="height:500px;" bindtouchstart="touchHandler1"></canvas>
+      </view>
     </view>
   </view>
   <view class="margin-white"></view>
@@ -55,11 +60,13 @@
   </view>
 </view>
 <view class="flex-row wrap recommend-view">
-<view style="height:20px;width:100%;"></view>
+  <view style="height:20px;width:100%;"></view>
   <recommend wx:for="{{recommends}}" wx:key="key" imageSrc="{{item.imageSrc}}" foodName="{{item.foodName}}" caloPer="{{item.caloPer}}"></recommend>
 </view>
 
 
 <view class="bottom">
-  <view class="margin-top"><text class="bottom-text" decode="emsp">----&emsp;&emsp;&emsp;我是有底线的&emsp;&emsp;&emsp;----</text></view>
+  <view class="margin-top">
+    <text class="bottom-text" decode="emsp">----&emsp;&emsp;&emsp;我是有底线的&emsp;&emsp;&emsp;----</text>
+  </view>
 </view>

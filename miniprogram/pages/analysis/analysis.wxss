@@ -5,7 +5,6 @@
   left: 0;
   height: 45px;
   background: #ffffff;
-  z-index: 999;
 }
 
 .navigationBar_custom{
@@ -34,7 +33,6 @@
 .card-bgcolor{
   background-color: #E8F4D9;
   width: 90%;
-  height: 100px;
   border-radius: 6px;
 }
 

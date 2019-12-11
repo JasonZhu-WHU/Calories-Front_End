@@ -43,6 +43,20 @@
 					"pathName": "pages/statistics/pages/Calories/Calories",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "analysis",
+					"pathName": "pages/analysis/analysis",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "index",
+					"pathName": "pages/index/index",
+					"query": "",
+					"scene": null
 				}
 			]
 		}
