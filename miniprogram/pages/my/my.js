@@ -1,23 +1,68 @@
 // pages/my/my.js
 Page({
-
   /**
-   * 页面的初始数据
-   */
+  * 页面的初始数据
+  */
   data: {
-
+    index: 0,
+    score: 0,
+    height: 0,
+    weight: 0,
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  bindPickerChange: function (e) {
+    this.setData({
+      index: e.detail.value
+    })
+  },
 
+  bindKeyHightInput: function (e) {
+    this.setData({
+      height: e.detail.value
+    })
+  },
+
+  bindKeyWeightInput: function (e) {
+    this.setData({
+      weight: e.detail.value
+    })
+  },
+
+  calculateBtn: function (e) {
+    if (!this.data.height) {
+      wx.showToast({
+        title: '请输入身高'
+      })
+      return false;
+    }
+
+    if (!this.data.weight) {
+      wx.showToast({
+        title: '请输入体重'
+      })
+      return false;
+    }
+    this.calculate();
+    this.weightStandardCalculate();
+    this.physicalConditionCalculate();
+  },
+
+  //计算IBM值
+  calculate: function () {
+    let score = 0;
+    let height = this.data.height / 100;
+    score = (this.data.weight / (height * height)).toFixed(1);
+    this.setData({
+      score: score
+    })
   },
 
   /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
+  * 生命周期函数--监听页面初次渲染完成
+  */
   onReady: function () {
 
   },
@@ -57,10 +102,4 @@ Page({
 
   },
 
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
-  }
 })
