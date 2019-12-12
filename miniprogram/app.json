@@ -4,6 +4,7 @@
     "pages/my/my",
     "pages/analysis/analysis",
     "pages/shot/shot"
+   
   ],
   "window": {
     "navigationBarBackgroundColor": "#03A9F4",

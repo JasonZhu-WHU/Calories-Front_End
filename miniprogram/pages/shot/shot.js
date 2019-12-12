@@ -8,6 +8,14 @@ Page({
     carWin_img_hidden: true, //展示照片的view是否隐藏
     carWin_img: '' ,//存放照片路径的
     resultBase64ImageB:'',//转成编码
+    choose:false,
+    result:[],
+    userDish:'',//菜的名称
+    userCal:0.0,//单位卡路里
+    dishWeight:0.0,//吃的重量
+    getWeight:false,
+    date:null//上传的日期
+    
   },
   clickpics: function () {
     var that = this;
@@ -16,41 +24,67 @@ Page({
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
       success: function (res) {
         // 无论用户是从相册选择还是直接用相机拍摄，路径都是在这里面
-        var filePath = res.tempFilePaths[0];
+      const file = res.tempFilePaths[0];
         //将刚才选的照片/拍的 放到下面view视图中
         that.setData({
-          carWin_img: filePath, //把照片路径存到变量中，
-          carWin_img_hidden: false //让展示照片的view显示
+          carWin_img: file, //把照片路径存到变量中，
+          carWin_img_hidden: false, //让展示照片的view显示
+          
         });
+        wx.getFileSystemManager().readFile({
+          filePath: that.data.carWin_img, //选择图片返回的相对路径
+          encoding: 'base64', //编码格式
+          success: res => { //成功的回调
+            that.setData({
+              resultBase64ImageB: encodeURI(res.data)
+            });
+            console.log(that.data.resultBase64ImageB);
+            that.analysis();
+
+          }
+        })
+
+       
       }
-    })
-    wx.getFileSystemManager().readFile({
-      filePath: this.carWin_img, //选择图片返回的相对路径
-      encoding: 'base64', //编码格式
-      success: resultBase => { //成功的回调
-        that.setData({
-          resultBase64ImageB: resultBase.data
-        });
-      }
-    })
+
+      })
    
-    this.analysis()
-  },
+    },
   analysis:function(){
     //调用接口返回识别内容
-    var access_token = "24.d86fa2092e41a9897f6e64efd77f1c36.2592000.1578540493.282335-17974307"
-   
+    //const access_token = "24.d86fa2092e41a9897f6e64efd77f1c36.2592000.1578540493.282335-17974307"
+   var that = this;
    wx.request({
      url: 'https://aip.baidubce.com/rest/2.0/image-classify/v2/dish?access_token=24.d86fa2092e41a9897f6e64efd77f1c36.2592000.1578540493.282335-17974307',
      header: {'content-type':'application/x-www-form-urlencoded'},
      method:'POST',
      data:{
-       image: encoding(this.resultBase64ImageB)
+       image: that.data.resultBase64ImageB,
+       filter_threshold:0.95
      },
      success:function(res){
-       console.log(res.data);
+      
+      //console.log(res.data.result[0].calorie);
+      that.setData({
+        choose:true,
+       result:res.data.result
+      });
+      console.log(that.data.result);
      }
    })
+  },
+//隐藏选择框
+  hideModal: function () {
+    this.setData({
+      choose: false,
+      getWeight:false
+    });
+  },
+  
+  preventTouchMove: function () { },
+  
+  onCancel: function () {
+    this.hideModal();
   },
   /**
    * 生命周期函数--监听页面加载
@@ -68,7 +102,78 @@ Page({
       carWin_img: ''
     });
   },
+  //下面是选择食物的函数，需要弹出另外一个框填入吃的重量
+choose:function(e){
+  var viewId = e.target.id;
+   if(viewId=="d1"){
+     this.setData(
+       {
+         userDish :this.data.result[0].name,
+         userCal :this.data.result[0].calorie
+       }
+     );
+   }else if(viewId=="d2"){
+     this.setData(
+       {
+         userDish: this.data.result[1].name,
+         userCal: this.data.result[1].calorie
+       });
+   }else if(viewId=="d3"){
+     this.setData(
+       {
+         userDish: this.data.result[2].name,
+         userCal: this.data.result[2].calorie
+       });
+   }else if(viewId=="d4"){
+     this.setData(
+       {
+         userDish: this.data.result[3].name,
+         userCal: this.data.result[3].calorie
+       });
+   }else if(viewId=="d5"){
+     this.setData(
+       {
+         userDish: this.data.result[4].name,
+         userCal: this.data.result[4].calorie
+       });
+   }
+  this.buf();
+},
+buf:function(){
+  this.setData({
+    choose: false,
+    getWeight: true
+  });        
+},
+ins:function(e){
+  this.setData({
+    dishWeight:e.detail.value
+  });
+ 
+},
+confirm:function(){
+  this.setData({
+    getWeight:false
+  });
+  console.log(this.data.dishWeight);
+  //获取提交时间
+  var timestamp = Date.parse(new Date()).valueOf();
+  //确认后就将信息上传给后台
+  wx.request({
+    url: 'https://csquare.wang/food',
+    data: {
+      openId:app.globalData.openid,        //需传入用户openid
+      name:this.data.userDish,
+      time:timestamp,
+      calories:this.data.userCal,
+      weight:this.data.dishWeigh,
+    },
+    header: {
+      'content-type': 'application/json'
+    },
+  })
 
+},
   /**
    * 生命周期函数--监听页面显示
    */

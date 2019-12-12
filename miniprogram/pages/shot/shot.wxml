@@ -7,5 +7,37 @@
 
 </view>
 <view class="tips">
-<text class="nav-title">点 击 按 钮 识 别 食 物</text>
+<text>
+  点击按钮识别食物\n
+(◎｀・ω・´)人(´・ω・｀*)
+</text>
+</view>
+
+<view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{choose}}"></view>
+<view class="modal-dialog" wx:if="{{choose}}">
+  <view class="modal-title">请选择你吃了啥༼｡＾･ｪ･＾｡༽</view>
+  <view class="modal-content">
+     <view bindtap="choose" id="d1" class="dish">{{result[0].name}}</view>
+     <view bindtap="choose" id="d2" class="dish">{{result[1].name}}</view>
+     <view bindtap="choose" id="d3" class="dish">{{result[2].name}}</view>
+     <view bindtap="choose" id="d4" class="dish">{{result[3].name}}</view>
+     <view bindtap="choose" id="d5" class="dish">{{result[4].name}}</view>
+  </view>
+  <view class="modal-footer">
+    <view class="btn-cancel" bindtap="onCancel" data-status="cancel">(o￣Д￣)＜我不吃了!</view>
+  </view>
+</view>
+
+<view class="modal-mask" bindtap="hideModal" catchtouchmove="preventTouchMove" wx:if="{{getWeight}}"></view>
+<view class="modal-dialog" wx:if="{{getWeight}}">
+  <view class="modal-title">吃了多少鸭！</view>
+  <view class="modal-content" bindsubmit='passV'>
+     <view class="dish1"><text class='txt'>菜     名:</text>{{userDish}}</view>
+     <view class="dish1"><text class='txt'>每百克cal:</text>{{userCal}}</view>
+     <view class="dish1"><text class='txt'>吃了多少:</text><input class='input' bindinput="ins" ></input><text class='txt'>g</text></view>
+  </view>
+
+  <view class="modal-footer">
+    <view class="btn-cancel"  bindtap="confirm">确认！٩( 'ω' )و </view>
+  </view>
 </view>

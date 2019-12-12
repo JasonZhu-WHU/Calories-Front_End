@@ -121,7 +121,7 @@ Component({
         url: 'https://csquare.wang/food/daily',
         method: 'GET',
         data: {
-          openId: app.globalData.openid, //需传入用户openid
+          openId:app.globalData.openid,        //需传入用户openid
           startTime: this.data.starttime,
           endTime: this.data.endtime
         },
