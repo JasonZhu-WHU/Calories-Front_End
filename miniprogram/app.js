@@ -21,6 +21,7 @@ App({
 
   },
   globalData: {
+    openId: '',
     statusBarHeight: wx.getSystemInfoSync()['statusBarHeight'],
     windowHeight:0,
     windowWidth:0,

@@ -5,7 +5,10 @@ Page({
     PageCur: 'shot',
     //判断小程序的API，回调，参数，组件等是否在当前版本可用。
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    isHide: false
+    isHide: false,
+
+    pieChartData: null,
+    histogramData: null
   },
 
   NavChange(e) {
@@ -81,5 +84,49 @@ Page({
         }
       });
     }
+  },
+
+  getPieChartData(){
+    var starttimestamp = Date.parse(new Date());
+    var that = this;
+    //获取当日食物占比 画图表
+    wx.request({
+      url: 'https://csquare.wang/food/ratio',
+      method: 'GET',
+      data: {
+        openId: app.globalData.openid, //需传入用户openid
+        time: starttimestamp
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res) {
+        console.log(res.data);
+        var todayRatio = res.data;
+        var food_array = [];
+        var ratio_array = [];
+
+        //准备今天吃了什么的图表数据
+        for (var i = 0; i < that.data.todayRatio.length; i++) {
+          var ratiof = that.data.todayRatio[i]
+          //准备图表需要的数据
+          food_array.push(ratiof.ratio)
+          ratio_array.push(ratiof.ratio)
+        }
+
+        //可能会有异步问题，最好promise重写
+        that.setData({
+          pieChartData:{
+            food_array: food_array,
+            ratio_array: ratio_array
+          }
+        })
+      }
+    })
+  },
+
+  //这里到底是要画一个推荐的和实际的卡路里摄入histogram么
+  getHistogramData() {
+    
   }
 })
