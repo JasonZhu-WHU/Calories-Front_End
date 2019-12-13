@@ -1,4 +1,5 @@
 // pages/shot/shot.js
+const app = getApp()
 Page({
 
   /**
@@ -161,12 +162,15 @@ confirm:function(){
   //确认后就将信息上传给后台
   wx.request({
     url: 'https://csquare.wang/food',
+    method:'POST',
     data: {
-      openId:app.globalData.openid,        //需传入用户openid
-      name:this.data.userDish,
-      time:timestamp,
-      calories:this.data.userCal,
-      weight:this.data.dishWeigh,
+      openId:app.globalData.openId,        //需传入用户openid
+      reqParam: {
+        name: this.data.userDish,
+        time: timestamp,
+        calories: this.data.userCal,
+        weight: this.data.dishWeigh,
+      }
     },
     header: {
       'content-type': 'application/json'
