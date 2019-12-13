@@ -33,16 +33,27 @@ Page({
                 success: res => {
                   // 获取到用户的 code 之后：res.code
                   console.log("用户的code:" + res.code);
-                  // 可以传给后台，再经过解析获取用户的 openid
-                  // 或者可以直接使用微信的提供的接口直接获取 openid ，方法如下：
-                  // wx.request({
-                  //     // 自行补上自己的 APPID 和 SECRET
-                  //     url: 'https://api.weixin.qq.com/sns/jscode2session?appid=自己的APPID&secret=自己的SECRET&js_code=' + res.code + '&grant_type=authorization_code',
-                  //     success: res => {
-                  //         // 获取到用户的 openid
-                  //         console.log("用户的openid:" + res.data.openid);
-                  //     }
-                  // });
+                  //获取用户openid 虽然我觉得传secret会被微信暴打
+                  wx.request({
+                    url: 'https://csquare.wang/openid',
+                    data:{
+                      "appid": "wxfdbdf9572f3ae678",
+                      "secret": "5fecb5d7093bb4a17d7d77cb19cf37a2",
+                      "js_code": res.code,
+                      "grant_type": "authorization_code"
+                    },
+                    header:{
+                      'content_type': "application/json"
+                    },
+                    method: "GET",
+                    success(res){
+                      console.log(res.data.openid)
+                      app.globalData.openId = res.data.openid
+                    },
+                    fail(res){
+                      console.log(res)
+                    }
+                  })
                 }
               });
             }
