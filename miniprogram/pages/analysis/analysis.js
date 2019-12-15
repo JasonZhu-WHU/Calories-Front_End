@@ -100,7 +100,6 @@ Component({
           'content-type': 'application/json'
         },
         success(res) {
-          console.log(res.data);
           if(res.data.success==true){
             that.setData({
               todayStep: res.data.resData[res.data.resData.length - 1].steps
@@ -147,13 +146,25 @@ Component({
         success(res) {
           console.log(res.data);
           if(res.data.success==true){
-            var todayRatio = res.data.resData
-            var food_array = [];
-            var ratio_array = [];
-            
+            var todayRatioObject = res.data.resData
+            var food_array = []
+            var ratio_array = []
+            var todayRatio = []
+            //把resData转成数组，存到todayRatio
+            var keys =Object.keys(todayRatioObject)
+            var values = Object.values(todayRatioObject)
+
+            for(var i=0;i<keys.length;i++){
+              todayRatio.push({
+                name:keys[i],
+                ratio:values[i]
+              })
+            }
+
             that.setData({
               todayRatio: todayRatio
             })
+
             console.log(that.data.todayRatio.length)
             //准备图表数据 + 求最大、最小占比的食物
             var max_food = that.data.todayRatio[0].name
@@ -179,8 +190,6 @@ Component({
               big_ratio_food: max_food,
               small_ratio_food: min_food
             })
-            console.log(that.data.big_ratio_food)
-            console.log(that.data.small_ratio_food)
           }
           
           //画图表
