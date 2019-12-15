@@ -31,7 +31,6 @@ Page({
     this.setData({
       PageCur: e.currentTarget.dataset.cur
     })
-
   },
 
   onLoad: function () {

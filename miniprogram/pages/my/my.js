@@ -185,4 +185,26 @@ Page({
 
   },
 
+  NavChange(e) {
+    console.log(e.currentTarget.dataset.cur)
+    if (e.currentTarget.dataset.cur == "analysis") {
+      wx.redirectTo({
+        url: '/pages/analysis/analysis',
+      })
+    }
+    else if (e.currentTarget.dataset.cur == "shot") {
+      wx.redirectTo({
+        url: '/pages/shot/shot',
+      })
+    }
+    else {
+      wx.redirectTo({
+        url: '/pages/my/my',
+      })
+    }
+    this.setData({
+      PageCur: e.currentTarget.dataset.cur
+    })
+  },
+
 })
