@@ -34,6 +34,7 @@ Page({
   },
 
   onLoad: function () {
+    console.log("onload")
     var that = this;
     var _this = this
     var endtimestamp = Date.parse(new Date());
