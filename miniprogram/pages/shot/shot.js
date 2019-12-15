@@ -169,7 +169,7 @@ confirm:function(){
         name: this.data.userDish,
         time: timestamp,
         calories: this.data.userCal,
-        weight: this.data.dishWeigh,
+        weight: this.data.dishWeight,
       }
     },
     header: {
