@@ -1,4 +1,26 @@
 /* pages/my/my.wxss */
+.custom{
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 45px;
+  background: #ffffff;
+}
+
+.navigationBar_custom{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 100%;
+  background: #ffffff;
+}
+
+.nav-title{
+  font-size: 40rpx;
+}
+
 .userinfo {  
   position: relative;  
   width: 750rpx;  
@@ -56,8 +78,8 @@
 .input-container {
    padding: 0 40rpx;
 }
+
 .item {
-  border-bottom: 1px solid #e2e2e2;
   height:60rpx;
   line-height: 56rpx;
   font-size:32rpx;

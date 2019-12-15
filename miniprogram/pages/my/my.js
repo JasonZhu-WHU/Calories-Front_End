@@ -6,13 +6,17 @@ Page({
   * 页面的初始数据
   */
   data: {
+    statusBarHeight: app.globalData.statusBarHeight,
+    windowHeight: app.globalData.windowHeight,
     index: 0,
     bmi: 0,
-    inputHeight:0,
-    inputWeight:0,
     height: 0,
     weight: 0,
+    name:"",
+    sex:"",
+    profile:"",
   },
+
   onLoad: function () {
     this.setData({
       PageCur: 'my'
@@ -22,61 +26,30 @@ Page({
       url: 'https://csquare.wang/user',
       method: 'GET',
       data: {
-        openId: app.globalData.openid,        //需传入用户openid
+        "openId": app.globalData.openId       
       },
       header: {
         'content-type': 'application/json'
       },
       success(res) {
         that.setData({
-          inputHeight: res.data.height,
-          inputweight: res.data.weight,
-          bmi: res.data.bmi,
+          name: res.data.resData.name,
+          sex: res.data.resData.sex,
+          profile: res.data.resData.profile,
+          height: res.data.resData.height,
+          weight: res.data.resData.weight,
+          bmi: res.data.resData.bmi.toFixed(2),
         })
       }
     })
   },
 
   onShow: function () {
-    var that = this
-    wx.request({
-      url: 'https://csquare.wang/user',
-      method: 'GET',
-      data: {
-        openId: app.globalData.openid,        //需传入用户openid
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        that.setData({
-          inputHeight: res.data.height,
-          inputweight: res.data.weight,
-          bmi: res.data.bmi,
-        })
-      }
-    })
+
   },
 
   onHide: function () {
-    var that = this;
-    wx.request({
-      url: 'https://csquare.wang/user',
-      method: 'GET',
-      data: {
-        openId: app.globalData.openid,        //需传入用户openid
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        that.setData({
-          inputHeight: res.data.height,
-          inputweight: res.data.weight,
-          bmi: res.data.bmi,
-        })
-      }
-    })
+   
   },
   
   bindPickerChange: function (e) {
@@ -119,12 +92,15 @@ Page({
       data: {
         openId: app.globalData.openId,        //需传入用户openid
         reqParam: {
+          name: this.data.name,
+          sex: this.data.sex,
+          profile: this.data.profile,
           height: this.data.height,
           weight: this.data.weight,
           bmi: this.data.bmi,
-          weight: this.data.dishWeigh,
         }
       },
+
       header: {
         'content-type': 'application/json'
       },
@@ -136,7 +112,7 @@ Page({
   calculate: function () {
     let bmi = 0;
     let height = this.data.height / 100;
-    bmi = (this.data.weight / (height * height)).toFixed(1);
+    bmi = (this.data.weight / (height * height)).toFixed(2);
     this.setData({
       bmi: bmi
     })
@@ -146,24 +122,7 @@ Page({
   * 生命周期函数--监听页面初次渲染完成
   */
   onReady: function () {
-    var that = this
-    wx.request({
-      url: 'https://csquare.wang/user',
-      method: 'GET',
-      data: {
-        openId: app.globalData.openid,        //需传入用户openid
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        that.setData({
-          inputHeight: res.data.height,
-          inputweight: res.data.weight,
-          bmi: res.data.bmi,
-        })
-      }
-    })
+ 
   },
 
 
