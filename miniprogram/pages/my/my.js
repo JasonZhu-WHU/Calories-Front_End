@@ -14,6 +14,9 @@ Page({
     weight: 0,
   },
   onLoad: function () {
+    this.setData({
+      PageCur: 'my'
+    })
     var that = this
     wx.request({
       url: 'https://csquare.wang/user',
@@ -186,6 +189,9 @@ Page({
   },
 
   NavChange(e) {
+    this.setData({
+      PageCur: e.currentTarget.dataset.cur
+    })
     console.log(e.currentTarget.dataset.cur)
     if (e.currentTarget.dataset.cur == "analysis") {
       wx.redirectTo({
@@ -202,9 +208,6 @@ Page({
         url: '/pages/my/my',
       })
     }
-    this.setData({
-      PageCur: e.currentTarget.dataset.cur
-    })
   },
 
 })

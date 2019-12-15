@@ -12,6 +12,9 @@ Page({
   },
 
   NavChange(e) {
+    this.setData({
+      PageCur: e.currentTarget.dataset.cur
+    })
     console.log(e.currentTarget.dataset.cur)
     if (e.currentTarget.dataset.cur == "analysis") {
       wx.redirectTo({
@@ -34,6 +37,9 @@ Page({
   },
 
   onLoad: function () {
+    this.setData({
+      PageCur: 'shot'
+    })
     var that = this;
     // 查看是否授权
     wx.getSetting({

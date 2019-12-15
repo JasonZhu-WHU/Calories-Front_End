@@ -34,6 +34,9 @@ Page({
   },
 
   onLoad: function () {
+    this.setData({
+      PageCur: 'analysis'
+    })
     console.log("onload")
     var that = this;
     var _this = this
@@ -196,6 +199,9 @@ Page({
   },
 
   NavChange(e) {
+    this.setData({
+      PageCur: e.currentTarget.dataset.cur
+    })
     console.log(e.currentTarget.dataset.cur)
     if (e.currentTarget.dataset.cur == "analysis") {
       wx.redirectTo({
@@ -212,9 +218,6 @@ Page({
         url: '/pages/my/my',
       })
     }
-    this.setData({
-      PageCur: e.currentTarget.dataset.cur
-    })
   },
 
 })

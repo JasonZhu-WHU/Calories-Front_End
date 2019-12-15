@@ -91,7 +91,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      PageCur: 'shot'
+    })
   },
 
   /**
@@ -221,6 +223,9 @@ confirm:function(){
   },
 
   NavChange(e) {
+    this.setData({
+      PageCur: e.currentTarget.dataset.cur
+    })
     console.log(e.currentTarget.dataset.cur)
     if (e.currentTarget.dataset.cur == "analysis") {
       wx.redirectTo({
@@ -237,9 +242,6 @@ confirm:function(){
         url: '/pages/my/my',
       })
     }
-    this.setData({
-      PageCur: e.currentTarget.dataset.cur
-    })
   },
   
   // 拍摄或从相册选取上传
