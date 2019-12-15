@@ -46,7 +46,7 @@
   font-weight:600;
 }
 
-.result .score{
+.result .bmi{
   padding: 0 40rpx;
   line-height: 140rpx;
   font-size: 100rpx;

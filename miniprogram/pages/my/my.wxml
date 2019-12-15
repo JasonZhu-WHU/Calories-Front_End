@@ -9,19 +9,19 @@
 <view class="container">
   <view class="result">
     <view class="title">BMI值</view>
-    <view class="score">{{score}}</view>
+    <view class="bmi">{{bmi}}</view>
     </view>
   <view class="input-container">
     <view class="item">
       <text class="label">身高</text>
       <text class="unit">cm</text>
-      <input type="digit" bindinput="bindKeyHightInput" maxlength="6" class="" />
+      <input type="digit" value='{{inputHeight}}' bindinput="bindKeyHightInput" maxlength="6" class="" />
     </view>
     <view class="item">
       <text class="label">体重</text>
       <text class="unit">kg</text>
-      <input type="digit" bindinput="bindKeyWeightInput" maxlength="6" class="" />
+      <input type="digit" value='{{inputWeight}}' bindinput="bindKeyWeightInput" maxlength="6" class="" />
     </view>
-    <button class="calcu_btn" bindtap="calculateBtn">开始计算</button>
+    <button class="calcu_btn" bindtap="calculateBtn">确认数据</button>
   </view>
 </view>

@@ -45,18 +45,19 @@ Component({
   },
 
   lifetimes: {
-    attached: function() {
+    attached: function () {
       var that = this;
+      var _this = this
       var starttimestamp = Date.parse(new Date());
       var endtimestamp = starttimestamp - 24 * 60 * 60 * 1000;
-      this.setData({
+      _this.setData({
         starttime: starttimestamp,
         endtime: endtimestamp
       });
-      console.log(this);
-      var pages = getCurrentPages() 
+      console.log(_this);
+      var pages = getCurrentPages()
       console.log(pages)
-      this.touchHandler1();
+      // _this.touchHandler1();
       chart = new wxCharts({
         animation: true,
         canvasId: 'chartCanvas',
@@ -96,92 +97,115 @@ Component({
         height: 500,
         dataLabel: true,
       });
-
+      var _this = this
       //获取当日步数
       wx.request({
         url: 'https://csquare.wang/steps/daily',
         method: 'GET',
         data: {
-          openId: app.globalData.openid, //需传入用户openid
-          startTime: this.data.starttime,
-          endTime: this.data.endtime
-        },
-        header: {
-          'content-type': 'application/json'
-        },
-        success(res) {
-          that.setData({
-            todayStep: res.data[res.data.length - 1].steps
-          })
-        }
-      })
-
-      //获取当日卡路里
-      wx.request({
-        url: 'https://csquare.wang/food/daily',
-        method: 'GET',
-        data: {
-          openId:app.globalData.openid,        //需传入用户openid
-          startTime: this.data.starttime,
-          endTime: this.data.endtime
-        },
-        header: {
-          'content-type': 'application/json'
-        },
-        success(res) {
-          that.setData({
-            todayCalories: res.data[res.data.length - 1].calories
-          })
-        }
-      })
-
-      //获取当日食物占比 画图表
-      wx.request({
-        url: 'https://csquare.wang/food/ratio',
-        method: 'GET',
-        data: {
-          openId: app.globalData.openid, //需传入用户openid
-          time: this.data.starttime
+          "openId": app.globalData.openId, //需传入用户openId
+          // "reqParam": {
+            "startTime": _this.data.starttime,
+            "endTime": _this.data.endtime
+          // }
         },
         header: {
           'content-type': 'application/json'
         },
         success(res) {
           console.log(res.data);
-          var todayRotio = res.data;
-
-          var food_array = [];
-          var ratio_array = [];
-
-          //准备图表数据 + 求最大、最小占比的食物
-          for (var i = 0; i < that.data.todayRatio.length; i++) {
-            //求最大、最小占比的食物
-            var ratiof = that.data.todayRatio[i]
-            if (ratiof.ratio > max_ratio) {
-              max_food = ratiof.name
-              max_ratio = ratiof.ratio
-            } else if (ratiof.ratio < min_ratio) {
-              min_food = ratiof.name
-              min_ratio = ratiof.ratio
-            }
-            //准备图表需要的数据
-            food_array.push(ratiof.ratio)
-            ratio_array.push(ratiof.ratio)
+          if(res.data.success==true){
+            that.setData({
+              todayStep: res.data[res.data.length - 1].steps
+            })
           }
-          that.setData({
-            todayRatio: res.data
-          })
+        }
+      })
+
+      var _this = this
+      //获取当日卡路里
+      wx.request({
+        url: 'https://csquare.wang/food/daily',
+        method: 'GET',
+        data: {
+          "openId": app.globalData.openId,        //需传入用户openId
+          // "reqParam": {
+            "startTime": _this.data.starttime,
+            "endTime": _this.data.endtime
+          // }
+        },
+        header: {
+          'content-type': 'application/json'
+        },
+        success(res) {
+          console.log(res.data);
+          if(res.data.success==true){
+            that.setData({
+              todayCalories: res.data[res.data.length - 1].calories
+            })
+          }
+        }
+      })
+
+
+      //字符串
+      var jsonRatio = "{\"openId\":\"" + app.globalData.openId + "\",\"reqParam\":{\"time\":" + _this.data.starttime + "}}"
+
+      var _this = this
+      //获取当日食物占比 画图表
+      wx.request({
+        url: 'https://csquare.wang/food/ratio',
+        method: 'GET',
+        data: {
+          "openId": app.globalData.openId, //需传入用户openId
+          //"reqParam":{
+          "time": _this.data.starttime
+          //}
+        },
+        //data:jsonRatio,
+        header: {
+          'content-type': 'application/json'
+        },
+        success(res) {
+          console.log(res.data);
+          if(res.data.success==true){
+            var todayRotio = res.data;
+
+            var food_array = [];
+            var ratio_array = [];
+
+            //准备图表数据 + 求最大、最小占比的食物
+            for (var i = 0; i < that.data.todayRatio.length; i++) {
+              //求最大、最小占比的食物
+              var ratiof = that.data.todayRatio[i]
+              if (ratiof.ratio > max_ratio) {
+                max_food = ratiof.name
+                max_ratio = ratiof.ratio
+              } else if (ratiof.ratio < min_ratio) {
+                min_food = ratiof.name
+                min_ratio = ratiof.ratio
+              }
+              //准备图表需要的数据
+              food_array.push(ratiof.ratio)
+              ratio_array.push(ratiof.ratio)
+            }
+            that.setData({
+              todayRatio: res.data
+            })
+          }
+          
           //画图表
         }
       })
 
       //最大、最小占比的食物
-      var max_food = this.data.todayRatio[0].name
-      var max_ratio = this.data.todayRatio[0].ratio
-      var min_food = this.data.todayRatio[0].name
-      var min_ratio = this.data.todayRatio[0].ratio
-      for (var i = 0; i < this.data.todayRatio.length; i++) {
-        var ratiof = this.data.todayRatio[i]
+      var _this = this
+      var max_food = _this.data.todayRatio[0].name
+      var max_ratio = _this.data.todayRatio[0].ratio
+      var min_food = _this.data.todayRatio[0].name
+      var min_ratio = _this.data.todayRatio[0].ratio
+      for (var i = 0; i < _this.data.todayRatio.length; i++) {
+        var ratiof = _this.data.todayRatio[i]
         if (ratiof.ratio > max_ratio) {
           max_food = ratiof.name
           max_ratio = ratiof.ratio
@@ -190,7 +214,7 @@ Component({
           min_ratio = ratiof.ratio
         }
       }
-      this.setData({
+      _this.setData({
         big_ratio_food: max_food,
         small_ratio_food: min_food
       })
