@@ -156,9 +156,10 @@ confirm:function(){
   this.setData({
     getWeight:false
   });
-  console.log(this.data.dishWeight);
+  
   //获取提交时间
   var timestamp = Date.parse(new Date()).valueOf();
+ 
   //确认后就将信息上传给后台
   wx.request({
     url: 'https://csquare.wang/food',
@@ -169,14 +170,16 @@ confirm:function(){
         name: this.data.userDish,
         time: timestamp,
         calories: this.data.userCal,
-        weight: this.data.dishWeigh,
+        weight: this.data.dishWeight,
       }
     },
     header: {
       'content-type': 'application/json'
     },
   })
-
+  
+console.log(this.data.dishWeight);
+console.log(this.data.dishWeight);
 },
   /**
    * 生命周期函数--监听页面显示
