@@ -239,7 +239,7 @@ confirm:function(){
     }
     else {
       wx.redirectTo({
-        url: '/pages/my/my',
+        url: '/pages/home/home',
       })
     }
   },

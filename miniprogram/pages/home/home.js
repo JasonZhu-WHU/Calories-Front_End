@@ -1,23 +1,34 @@
-// pages/my/my.js
 const app = getApp()
+const host = app.globalData.requestHost
+const applicationBase = app.globalData.applicationBase
+const position = app.globalData.position
+const mainBase = app.globalData.mainBase
 
 Page({
-  /**
-  * 页面的初始数据
-  */
   data: {
+    imgBase: app.globalData.imgBase,
+    todayCalories: 0,
+    todaySteps: 0,
+    backgroundColor: '',
     statusBarHeight: app.globalData.statusBarHeight,
     windowHeight: app.globalData.windowHeight,
     index: 0,
     bmi: 0,
     height: 0,
     weight: 0,
-    name:"",
-    sex:"",
-    profile:"",
+    name: "",
+    sex: "",
+    profile: "",
+
+  },
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
   },
 
-  onLoad: function () {
+  onLoad(options) {
     this.setData({
       PageCur: 'my'
     })
@@ -26,7 +37,7 @@ Page({
       url: 'https://csquare.wang/user',
       method: 'GET',
       data: {
-        "openId": app.globalData.openId       
+        "openId": app.globalData.openId
       },
       header: {
         'content-type': 'application/json'
@@ -43,22 +54,25 @@ Page({
       }
     })
   },
-
-  onShow: function () {
-
+ 
+  showModal(e) {
+    this.setData({
+      modalName: e.currentTarget.dataset.target
+    })
+  },
+  hideModal(e) {
+    this.setData({
+      modalName: null
+    })
   },
 
-  onHide: function () {
-   
-  },
-  
   bindPickerChange: function (e) {
     this.setData({
       index: e.detail.value
     })
   },
 
-  bindKeyHightInput: function (e) {    
+  bindKeyHightInput: function (e) {
     this.setData({
       height: e.detail.value
     })
@@ -118,35 +132,6 @@ Page({
     })
   },
 
-  /**
-  * 生命周期函数--监听页面初次渲染完成
-  */
-  onReady: function () {
- 
-  },
-
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
   NavChange(e) {
     this.setData({
       PageCur: e.currentTarget.dataset.cur
@@ -164,9 +149,17 @@ Page({
     }
     else {
       wx.redirectTo({
-        url: '/pages/my/my',
+        url: '/pages/home/home',
       })
     }
   },
+
+  NavToInfo(e) {
+    wx.showToast({
+      title: '页面正在开发中，敬请期待',
+      icon: 'none',
+      duration: 3000
+    })
+  }
 
 })

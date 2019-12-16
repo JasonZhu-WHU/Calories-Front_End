@@ -28,13 +28,11 @@ Page({
     }
     else {
       wx.redirectTo({
-        url: '/pages/my/my',
+        url: '/pages/home/home',
       })
     }
-    this.setData({
-      PageCur: e.currentTarget.dataset.cur
-    })
   },
+
 
   onLoad: function () {
     this.setData({

@@ -23,6 +23,7 @@ App({
   globalData: {
     openId: '',
     statusBarHeight: wx.getSystemInfoSync()['statusBarHeight'],
+    imgBase: 'cloud://csapp-ad9iq.6373-csapp-ad9iq-1300859845',
     windowHeight:0,
     windowWidth:0,
     requestHost: 'https://csquare.wang', //记得更新服务器url

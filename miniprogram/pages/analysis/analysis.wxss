@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   height: 45px;
-  background: #ffffff;
+  /* background: #ffffff; */
 }
 
 .navigationBar_custom{
@@ -13,7 +13,7 @@
   justify-content: center;
   height: 80px;
   width: 100%;
-  background: #ffffff;
+  /* background: #ffffff; */
 }
 
 .nav-title{
