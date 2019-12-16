@@ -3,10 +3,10 @@
   <view class="UCenter-bg bg-gradual-green">
     
     <view class='cu-avatar xl margin-bottom round' >
-      <image class="cu-avatar round xl bg-white" src="/images/logo.jpg"></image>
+      <image class="cu-avatar round xl bg-white" src="{{profile}}"></image>
     </view>
     <view class="margin-top-xs">
-      <text class="text-xl bold">食知道</text>
+      <text class="text-xl bold">{{name}}</text>
     </view>
     <image src="{{imgBase}}/wave.gif" mode="scaleToFill" class="gif-wave"></image>
   </view>
@@ -38,20 +38,7 @@
         <text class="text-grey">个人信息</text>
       </view>
     </view>
-
-    <view class="cu-item arrow">
-      <view class="content" bindtap="bindWX">
-        <text class="cuIcon-weixin text-green"></text>
-        <text class="text-grey">绑定微信</text>
-      </view>
-    </view>
-
-    <view wx:if="{{roleName =='admin'}}" class="cu-item arrow">
-      <button class="cu-btn content" bindtap="chooseRole">
-        <text class="cuIcon-peoplelist text-cyan"></text>
-        <text class="text-grey">切换角色</text>
-      </button>
-    </view>
+    
 
     <view class="cu-item arrow">
       <navigator class="content" url="/pages/others/about/about" hover-class="none">

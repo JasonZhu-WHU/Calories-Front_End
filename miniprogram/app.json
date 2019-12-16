@@ -25,7 +25,8 @@
     {
       "root": "pages/others/",
       "pages": [
-        "about/about"
+        "about/about",
+        "info/info"
       ]
     }
   ],

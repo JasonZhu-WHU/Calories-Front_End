@@ -86,11 +86,12 @@ Page({
         'content-type': 'application/json'
       },
       success(res) {
-        console.log(res.data);
+        console.log(res.data)
         if (res.data.success == true) {
           that.setData({
             todayCalories: res.data.resData[res.data.resData.length - 1].calories
           })
+          app.globalData.todayCalories=that.data.todayCalories
         }
       }
     })
