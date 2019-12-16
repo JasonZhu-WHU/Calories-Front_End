@@ -23,7 +23,7 @@
     <view class="card-bgcolor at-center">
       <!-- <cover-view>放图表</cover-view> -->
       <view class="container" style="vertical-align: middle;">
-        <canvas canvas-id="lineCanvas" class="canvas" style="width:300px;height:250px;margin: 50rpx 60rpx 20rpx 20rpx;" bindtouchstart="touchHandler1"></canvas>
+        <canvas canvas-id="lineCanvas" class="canvas" style="width:300px;height:250px;margin: 50rpx 60rpx 20rpx 20rpx;" bindtouchstart="touchHandler" bindtouchmove="moveHandler" bindtouchend="touchEndHandler"></canvas>
       </view>
     </view>
   </view>

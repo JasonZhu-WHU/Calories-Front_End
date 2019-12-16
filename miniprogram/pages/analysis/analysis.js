@@ -178,45 +178,70 @@ Page({
         //画图表
       }
     })
-    var simulationData = this.createSimulationData();
-    lineChart = new wxCharts({
-      canvasId: 'lineCanvas',
-      type: 'line',
-      categories: simulationData.categories,
-      animation: false,
-      series: [{
-        name: '成交量1',
-        data: simulationData.data,
-        format: function (val, name) {
-          return val.toFixed(2) + '万';
+    wx.request({
+      url: 'https://csquare.wang/food/daily',
+      method: 'GET',
+      data: {
+        "openId": app.globalData.openId, //需传入用户openId
+        "startTime": that.data.starttime - 5 * 24 * 60 * 60 * 1000,
+        "endTime": that.data.endtime + 24 * 60 * 60 * 1000,
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res){
+        console.log(res.data)
+        var realDataArray = [];
+        var periodData = res.data.resData;
+        var time_categories = [];
+        for (var i = 0; i < periodData.length; i++) {
+          realDataArray.push(periodData[i].calories)
+          time_categories.push(periodData[i].time.substr(5, 5))
         }
-      },
-      {
-        name: '成交量2',
-        data: simulationData.data,
-        format: function (val, name) {
-          return (val - 3).toFixed(2) + '万';
-        }
-      }],
-      xAxis: {
-        disableGrid: false
-      },
-      yAxis: {
-        title: '成交金额 (万元)',
-        format: function (val) {
-          return val.toFixed(2);
-        },
-        min: 0
-      },
-      width: windowWidth,
-      height: 200,
-      dataLabel: true,
-      dataPointShape: true,
-      enableScroll: true,
-      extra: {
-        lineStyle: 'curve'
+        console.log(realDataArray)
+        var expectationData = that.createSimulationData();
+        console.log(time_categories)
+        lineChart = new wxCharts({
+          canvasId: 'lineCanvas',
+          type: 'line',
+          categories: time_categories,
+          animation: false,
+          series: [{
+            name: '实际摄入量',
+            // data: realDataArray,
+            data: realDataArray,
+            format: function (val, name) {
+              return val.toFixed(2) + '万';
+            }
+          },
+          {
+            name: '建议摄入量',
+            data: [5000, 5000, 5500, 5600, 5700, 5800, 5900],
+            format: function (val, name) {
+              return (val + 3).toFixed(2) + '万';
+            }
+          }],
+          xAxis: {
+            disableGrid: false
+          },
+          yAxis: {
+            title: '摄入热量 (千卡)',
+            format: function (val) {
+              return val.toFixed(2);
+            },
+            min: 0
+          },
+          width: windowWidth,
+          height: 200,
+          dataLabel: true,
+          dataPointShape: true,
+          enableScroll: true,
+          extra: {
+            lineStyle: 'curve'
+          }
+        });
       }
-    });
+    })
   },
 
   onReady() {
@@ -413,5 +438,21 @@ Page({
 
     chart1.setOption(option);
     return chart1;
-  }
+  },
+
+  touchHandler: function (e) {
+    lineChart.scrollStart(e);
+    var index = lineChart.getCurrentDataIndex(e);
+  },
+  moveHandler: function (e) {
+    lineChart.scroll(e);
+  },
+  touchEndHandler: function (e) {
+    lineChart.scrollEnd(e);
+    lineChart.showToolTip(e, {
+      format: function (item, category) {
+        return category + ' ' + item.name + ':' + item.data
+      }
+    });
+  },
 })

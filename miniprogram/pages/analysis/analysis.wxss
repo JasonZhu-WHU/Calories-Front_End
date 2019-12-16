@@ -31,7 +31,7 @@
 }
 
 .card-bgcolor{
-  background-color: #E8F4D9;
+  background-color: #ffffff;
   width: 90%;
   border-radius: 6px;
 }
