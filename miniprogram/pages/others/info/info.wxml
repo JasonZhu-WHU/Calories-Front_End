@@ -1,0 +1,23 @@
+<view class="custom flex_center bg-gradual-green" style="padding-top:{{statusBarHeight*2}}px"></view>
+<cu-custom bgColor="bg-gradual-green" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content" style="padding-top:3px">个人信息</view>
+</cu-custom>
+
+<view class="cu-form-group margin-top">
+	<view class="title" style="letter-spacing:3rpx;">身高</view>
+	<picker bindchange="PickerChange" value="{{index1}}" range="{{picker1}}">
+		<view class="picker" style="letter-spacing:3rpx;">
+			{{haveChoose1?picker1[index1]+' cm':'请选择身高，单位 cm'}}
+		</view>
+	</picker>
+</view>
+
+<view class="cu-form-group margin-top">
+	<view class="title" style="letter-spacing:3rpx;">体重</view>
+	<picker bindchange="PickerChangeWeight" value="{{index2}}" range="{{picker2}}">
+		<view class="picker" style="letter-spacing:3rpx;">
+			{{haveChoose2?picker2[index2]+' kg':'请选择体重，单位 kg'}}
+		</view>
+	</picker>
+</view>

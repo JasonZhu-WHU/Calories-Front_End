@@ -41,3 +41,22 @@
     <view class="btn-cancel"  bindtap="confirm">确认！٩( 'ω' )و </view>
   </view>
 </view>
+
+<view class="cu-bar tabbar bg-white shadow foot">
+  <view class="action" bindtap="NavChange" data-cur="analysis">
+    <view class='cuIcon-cu-image'>
+      <image src="/images/tabbar/basics{{PageCur=='analysis'?'_cur':''}}.png"></image>
+    </view>
+    <view class="{{PageCur=='analysis'?'text-green':'text-gray'}}">数据</view>
+  </view>
+  <view class="action add-action" bindtap="NavChange" data-cur="shot">
+    <button class="cu-btn cuIcon-add bg-green shadow"></button>
+      上传
+  </view>
+  <view class="action" bindtap="NavChange" data-cur="my">
+    <view class='cuIcon-cu-image'>
+      <image src="/images/tabbar/about{{PageCur=='my'?'_cur':''}}.png"></image>
+    </view>
+    <view class="{{PageCur=='my'?'text-green':'text-gray'}}">我的</view>
+  </view>
+</view>

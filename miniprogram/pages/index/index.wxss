@@ -28,4 +28,21 @@
     border-radius: 80rpx;
     margin: 70rpx 50rpx;
     font-size: 35rpx;
+    text-align: center;
+}
+
+.btn {
+  width: 80%;
+  margin-top: 20rpx;
+  color: white;
+  border-radius: 98rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn::after {
+  border-radius: 98rpx;
+  border: 0; 
 }

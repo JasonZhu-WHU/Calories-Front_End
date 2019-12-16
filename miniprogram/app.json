@@ -1,10 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/my/my",
     "pages/analysis/analysis",
-    "pages/shot/shot"
-   
+    "pages/shot/shot",
+    "pages/home/home"
   ],
   "window": {
     "navigationBarBackgroundColor": "#03A9F4",
@@ -21,6 +20,13 @@
       "pages": [
         "pages/Calories/Calories",
         "pages/Steps/Steps"
+      ]
+    },
+    {
+      "root": "pages/others/",
+      "pages": [
+        "about/about",
+        "info/info"
       ]
     }
   ],

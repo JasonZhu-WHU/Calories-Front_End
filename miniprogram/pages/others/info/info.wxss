@@ -1,0 +1,9 @@
+/* pages/others/info/info.wxss */
+.cu-form-group .title {
+  min-width: calc(4em + 30rpx);
+}
+
+.dimension{
+  font-size: 7pt;
+  color: #999999;
+}

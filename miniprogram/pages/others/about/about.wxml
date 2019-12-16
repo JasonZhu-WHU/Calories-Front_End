@@ -1,0 +1,13 @@
+<cu-custom bgColor="bg-gradual-green" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">关于</view></cu-custom>
+<view class='margin-xl bg-white padding-xl radius shadow-lg'>
+  <view class='text-center margin-bottom text-lg  text-grey'>关于食知道</view>
+  <view class='text-content'>
+    <view>Hi！欢迎使用食知道!</view>
+    <view class='margin-top-sm'>该项目希望能成为您身边的健康管理专家，方便用户对于自己的饮食进行控制调节。</view>
+    <view class='margin-top-sm'>用户可以拍照识别食物，获取食物卡路里信息。食知道会统计用户今日运动量，给出用户今日营养比例统计，并给出针对用户的建议，还提供了猜你想吃，用户个人历史信息可视化等功能
+</view>
+    <view class='margin-top-sm'>现有的软件，如app苹果健康，都只能考虑现有的运动量，不能考虑每日的营养摄入以及膳食搭配是否均衡。我们能够根据用户个人的身体数据综合考虑用户的每日运动量以及能量摄入，为用户推荐每日的膳食营养搭配。同时，可以记录用户的饮食习惯，让用户进行更好的自我管理。
+</view>
+    <view class='margin-top-sm'>更多功能敬请期待！</view>
+  </view>
+</view>

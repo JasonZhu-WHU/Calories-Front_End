@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "recommend":"../../component/recommend/recommend"
+    "recommend":"../../component/recommend/recommend",
+    "ec-canvas": "../../ec-canvas/ec-canvas"
   }
 }

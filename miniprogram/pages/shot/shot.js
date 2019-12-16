@@ -91,7 +91,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.setData({
+      PageCur: 'shot'
+    })
   },
 
   /**
@@ -168,7 +170,7 @@ confirm:function(){
       openId:app.globalData.openId,        //需传入用户openid
       reqParam: {
         name: this.data.userDish,
-        time: timestamp,
+        time: timestamp + 24 * 60 * 60 * 1000,
         calories: this.data.userCal,
         weight: this.data.dishWeight,
       }
@@ -221,6 +223,28 @@ console.log(this.data.dishWeight);
    */
   onShareAppMessage: function () {
 
+  },
+
+  NavChange(e) {
+    this.setData({
+      PageCur: e.currentTarget.dataset.cur
+    })
+    console.log(e.currentTarget.dataset.cur)
+    if (e.currentTarget.dataset.cur == "analysis") {
+      wx.redirectTo({
+        url: '/pages/analysis/analysis',
+      })
+    }
+    else if (e.currentTarget.dataset.cur == "shot") {
+      wx.redirectTo({
+        url: '/pages/shot/shot',
+      })
+    }
+    else {
+      wx.redirectTo({
+        url: '/pages/home/home',
+      })
+    }
   },
   
   // 拍摄或从相册选取上传

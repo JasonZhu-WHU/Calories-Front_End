@@ -1,7 +1,7 @@
 {
   "usingComponents": {
     "analysis": "/pages/analysis/analysis",
-    "my": "/pages/my/my",
+    "my": "/pages/home/home",
     "shot": "/pages/shot/shot"
   }
 }

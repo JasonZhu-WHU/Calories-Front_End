@@ -15,10 +15,29 @@ Page({
     this.setData({
       PageCur: e.currentTarget.dataset.cur
     })
-
+    console.log(e.currentTarget.dataset.cur)
+    if (e.currentTarget.dataset.cur == "analysis") {
+      wx.redirectTo({
+        url: '/pages/analysis/analysis',
+      })
+    }
+    else if (e.currentTarget.dataset.cur == "shot") {
+      wx.redirectTo({
+        url: '/pages/shot/shot',
+      })
+    }
+    else {
+      wx.redirectTo({
+        url: '/pages/home/home',
+      })
+    }
   },
 
+
   onLoad: function () {
+    this.setData({
+      PageCur: 'shot'
+    })
     var that = this;
     // 查看是否授权
     wx.getSetting({
