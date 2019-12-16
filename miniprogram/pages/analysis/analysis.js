@@ -7,7 +7,9 @@ const host = app.globalData.requestHost
 var chart = null;
 var chart1 = null;
 var lineChart = null
+var radarChart = null;
 var windowWidth = wx.getSystemInfoSync().windowWidth;
+var advice = "";
 
 Page({
   data: {
@@ -15,6 +17,7 @@ Page({
     windowHeight: app.globalData.windowHeight,
     starttime: 0,
     endtime: 0,
+    advice,
     todayStep: 0, //今日步数
     todayCalories: 0.0, //今日卡路里
     todayRatio: [], //今日食物占比
@@ -50,29 +53,41 @@ Page({
     });
     // this.drawPieDiagram()
     var _this = this
-    //获取当日步数
-    wx.request({
-      url: 'https://csquare.wang/steps/daily',
-      method: 'GET',
-      data: {
-        "openId": app.globalData.openId, //需传入用户openId
-        "startTime": _this.data.starttime,
-        "endTime": _this.data.endtime
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        if (res.data.success == true) {
-          that.setData({
-            todayStep: res.data.resData[res.data.resData.length - 1].steps
-          })
-          console.log("今日步数：" + that.data.todayStep)
-        }
-      }
-    })
 
-    var _this = this
+    //祝捷：我觉得这个没必要，因为反正启动的时候会get到Steps的，从全局区取就完了
+    //获取当日步数
+    // wx.request({
+    //   url: 'https://csquare.wang/steps/daily',
+    //   method: 'GET',
+    //   data: {
+    //     "openId": app.globalData.openId, //需传入用户openId
+    //     "startTime": _this.data.starttime,
+    //     "endTime": _this.data.endtime
+    //   },
+    //   header: {
+    //     'content-type': 'application/json'
+    //   },
+    //   success(res) {
+    //     if (res.data.success == true) {
+    //       that.setData({
+    //         todayStep: res.data.resData[res.data.resData.length - 1].steps
+    //       })
+    //       console.log("今日步数：" + that.data.todayStep)
+    //     }
+    //   }
+    // })
+
+    // var steps = app.globalData.steps;
+    var steps = 7500;
+    
+    console.log(app.globalData)
+    var steps_score = this.calculateStepScore(steps);
+    var calories_score = 90;
+    var BMI_score = this.calculateBMIScore();
+    console.log(steps_score)
+    console.log(calories_score)
+    console.log(BMI_score)
+
     //获取当日卡路里
     wx.request({
       url: 'https://csquare.wang/food/daily',
@@ -87,12 +102,14 @@ Page({
       },
       success(res) {
         console.log(res.data)
+        var todayCalories = res.data.resData[res.data.resData.length - 1].calories
         if (res.data.success == true) {
           that.setData({
-            todayCalories: res.data.resData[res.data.resData.length - 1].calories
+            todayCalories: todayCalories
           })
-          app.globalData.todayCalories=that.data.todayCalories
+          app.globalData.todayCalories=todayCalories
         }
+        calories_score = that.calculateCaloriesScore(todayCalories);
       }
     })
 
@@ -175,6 +192,22 @@ Page({
         //画图表
       }
     })
+    radarChart = new wxCharts({
+      canvasId: 'radarCanvas',
+      type: 'radar',
+      categories: ['热量摄入', '运动量', '身材'],
+      series: [{
+        name: '健康评估',
+        data: [calories_score, steps_score, BMI_score]
+      }],
+      width: windowWidth,
+      height: 200,
+      extra: {
+        radar: {
+          max: 150
+        }
+      }
+    });
     wx.request({
       url: 'https://csquare.wang/food/daily',
       method: 'GET',
@@ -324,6 +357,86 @@ Page({
     return {
       categories: categories,
       data: data
+    }
+  },
+
+  //根据中国疾病预防控制中心慢病中心等7个机构，联合发布《科学健走腾冲宣言》编写的函数
+  calculateStepScore: function(step){
+    if(step-10000>0){
+      var score = step- 15000;
+      if(score > 15000){
+        advice = "今天已经运动了" + step + "步啦，好好休息吧，科学锻炼，避免关节长期磨损哦^-^"
+        score = (100 - score / 200)
+      }
+      else{
+        advice = "今天已经运动了" + step + "步啦，运动量刚刚好"
+        score = 100
+      }
+    }
+    else{
+      var score = 8000 - step;
+      if (score > 8000) {
+        advice = "今天已经运动了" + step + "步啦，运动量刚刚好"
+        score = 100
+      }
+      else {
+        advice = "今天已经运动了" + step + "步啦，还要多锻炼哦，医学建议每天8000步以上，加油呀！"
+        score = (100 - score / 100)
+      }
+    }
+    console.log(advice)
+    this.setData({
+      advice: advice
+    })
+    return score
+  },
+  calculateCaloriesScore: function(calories){
+    if (app.globalData.userInfo.gender == 0 || app.globalData.userInfo.gender == 1){
+      if (calories - 2340 > 0) {
+        var score = calories - 2340;
+        score = score / 50;
+        score = 100 - score;
+        return score
+      }
+      else if(calories > 1980){
+        var score = 100;
+        return 100
+      }
+      else{
+        var score = 1980 - calories;
+        score = score / 30;
+        return score
+      }
+    }
+    else{
+      if (calories - 1900 > 0) {
+        var score = calories - 1900;
+        score = score / 50;
+        score = 100 - score;
+        return score
+      }
+      else if (calories > 1800) {
+        var score = 100;
+        return 100
+      }
+      else {
+        var score = 1800 - calories;
+        score = score / 30;
+        return score
+      }
+    }
+  },
+
+  calculateBMIScore: function(){
+    var bmi = app.globalData.bmi
+    if(bmi < 20){
+      return 10 * bmi - 100
+    }
+    else if(bmi < 25){
+      return 100
+    }
+    else{
+      return 200 - 8 * bmi
     }
   },
 

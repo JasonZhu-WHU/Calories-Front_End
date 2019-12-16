@@ -86,6 +86,20 @@ Page({
         }
       }
     });
+    wx.request({
+      url: 'https://csquare.wang/user',
+      method: 'GET',
+      data: {
+        "openId": app.globalData.openId
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res) {
+        console.log(res)
+        app.globalData.bmi = res.data.resData.bmi.toFixed(2)
+      }
+    })
   },
 
   bindGetUserInfo: function (e) {

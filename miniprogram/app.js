@@ -51,6 +51,7 @@ App({
     userWeight:0,
     userInfo: null, 
     todayCalories:0,
+    bmi: 0,
     requestHost: 'https://csquare.wang', //记得更新服务器url
     ColorList: [{
       title: '嫣红',
