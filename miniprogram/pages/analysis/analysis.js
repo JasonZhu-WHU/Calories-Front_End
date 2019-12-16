@@ -5,6 +5,8 @@ var wxCharts = require('../../ec-canvas/wxcharts-min.js');
 import * as echarts from '../../ec-canvas/echarts.min.js';
 const host = app.globalData.requestHost
 var chart = null;
+var chart1 = null;
+var lineChart = null
 var windowWidth = wx.getSystemInfoSync().windowWidth;
 
 Page({
@@ -18,6 +20,7 @@ Page({
     todayRatio: [], //今日食物占比
     big_ratio_food: "", //最大占比食物名称
     small_ratio_food: "", //最小占比食物名称
+    ec: {},
     recommends: [{
       imageSrc: "../../images/汉堡.png",
       foodName: "汉堡",
@@ -33,7 +36,7 @@ Page({
     }]
   },
 
-  onLoad: function () {
+  onLoad: function() {
     this.setData({
       PageCur: 'analysis'
     })
@@ -46,47 +49,7 @@ Page({
       starttime: starttimestamp + 8 * 60 * 60 * 1000,
       endtime: endtimestamp + 8 * 60 * 60 * 1000
     });
-    var pages = getCurrentPages()
-    // _this.touchHandler1();
-    chart = new wxCharts({
-      animation: true,
-      canvasId: 'chartCanvas',
-      type: 'pie',
-      series: [{
-        name: '成交量1',
-        data: 15,
-      }, {
-        name: '成交量2',
-        data: 35,
-      }, {
-        name: '成交量3',
-        data: 78,
-      }, {
-        name: '成交量4',
-        data: 63,
-      }, {
-        name: '成交量2',
-        data: 35,
-      }, {
-        name: '成交量3',
-        data: 78,
-      }, {
-        name: '成交量4',
-        data: 63,
-      }, {
-        name: '成交量2',
-        data: 35,
-      }, {
-        name: '成交量3',
-        data: 78,
-      }, {
-        name: '成交量3',
-        data: 78,
-      }],
-      width: windowWidth,
-      height: 500,
-      dataLabel: true,
-    });
+    // this.drawPieDiagram()
     var _this = this
     //获取当日步数
     wx.request({
@@ -116,7 +79,7 @@ Page({
       url: 'https://csquare.wang/food/daily',
       method: 'GET',
       data: {
-        "openId": app.globalData.openId,        //需传入用户openId
+        "openId": app.globalData.openId, //需传入用户openId
         "startTime": _this.data.starttime,
         "endTime": _this.data.endtime
       },
@@ -146,11 +109,11 @@ Page({
       },
       success(res) {
         console.log(res.data);
-        if (res.data.success == true) {
+        // if (res.data.success == true) {
+        if (true) {
           var todayRatioObject = res.data.resData
-          var food_array = []
-          var ratio_array = []
           var todayRatio = []
+          var arr = []
           //把resData转成数组，存到todayRatio
           var keys = Object.keys(todayRatioObject)
           var values = Object.values(todayRatioObject)
@@ -160,8 +123,30 @@ Page({
               name: keys[i],
               ratio: values[i]
             })
+            arr.push({
+              name: keys[i],
+              data: values[i]
+            })
           }
-
+          //实际记得注释
+          todayRatio.push({
+            name: "热干面",
+            data: 680
+          })
+          todayRatio.push({
+            name: "西红柿鸡蛋炒面",
+            data: 1300
+          })
+          console.log(todayRatio)
+          chart = new wxCharts({
+            animation: true,
+            canvasId: 'chartCanvas',
+            type: 'pie',
+            series: todayRatio,
+            width: windowWidth,
+            height: 300,
+            dataLabel: true,
+          });
           that.setData({
             todayRatio: todayRatio
           })
@@ -183,9 +168,6 @@ Page({
               min_food = ratiof.name
               min_ratio = ratiof.ratio
             }
-            //准备图表需要的数据
-            food_array.push(ratiof.ratio)
-            ratio_array.push(ratiof.ratio)
           }
           that.setData({
             big_ratio_food: max_food,
@@ -196,6 +178,55 @@ Page({
         //画图表
       }
     })
+    var simulationData = this.createSimulationData();
+    lineChart = new wxCharts({
+      canvasId: 'lineCanvas',
+      type: 'line',
+      categories: simulationData.categories,
+      animation: false,
+      series: [{
+        name: '成交量1',
+        data: simulationData.data,
+        format: function (val, name) {
+          return val.toFixed(2) + '万';
+        }
+      },
+      {
+        name: '成交量2',
+        data: simulationData.data,
+        format: function (val, name) {
+          return (val - 3).toFixed(2) + '万';
+        }
+      }],
+      xAxis: {
+        disableGrid: false
+      },
+      yAxis: {
+        title: '成交金额 (万元)',
+        format: function (val) {
+          return val.toFixed(2);
+        },
+        min: 0
+      },
+      width: windowWidth,
+      height: 200,
+      dataLabel: true,
+      dataPointShape: true,
+      enableScroll: true,
+      extra: {
+        lineStyle: 'curve'
+      }
+    });
+  },
+
+  onReady() {
+    var that = this;
+    this.setData({
+      ec: {
+        onInit: this.initChart
+      },
+    })
+    console.log(chart1)
   },
 
   NavChange(e) {
@@ -207,17 +238,180 @@ Page({
       wx.redirectTo({
         url: '/pages/analysis/analysis',
       })
-    }
-    else if (e.currentTarget.dataset.cur == "shot") {
+    } else if (e.currentTarget.dataset.cur == "shot") {
       wx.redirectTo({
         url: '/pages/shot/shot',
       })
-    }
-    else {
+    } else {
       wx.redirectTo({
         url: '/pages/my/my',
       })
     }
   },
 
+  drawPieDiagram: function() {
+    wx.request({
+      url: 'https://csquare.wang/food/ratio',
+      method: 'GET',
+      data: {
+        "openId": app.globalData.openId, //需传入用户openId
+        "time": that.data.endtime
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res) {
+        console.log(res.data);
+        if (res.data.success == true) {
+          var todayRatioObject = res.data.resData
+          var todayRatio = []
+          //把resData转成数组，存到todayRatio
+          var keys = Object.keys(todayRatioObject)
+          var values = Object.values(todayRatioObject)
+
+          for (var i = 0; i < keys.length; i++) {
+            todayRatio.push({
+              name: keys[i],
+              ratio: values[i]
+            })
+          }
+          console.log(todayRatio)
+          pieChart1 = new wxCharts({
+            animation: true,
+            canvasId: 'pieCanvas1',
+            type: 'pie',
+            series: arr,
+            width: windowWidth,
+            height: 300,
+            dataLabel: true,
+          });
+        }
+
+        //画图表
+      }
+    })
+  },
+
+  createSimulationData: function () {
+    var categories = [];
+    var data = [];
+    for (var i = 0; i < 10; i++) {
+      categories.push('201' + i);
+      data.push(Math.random() * (20 - 10) + 10);
+    }
+    return {
+      categories: categories,
+      data: data
+    }
+  },
+
+
+  initChart(canvas, width, height) {
+    console.log('init')
+    chart1 = echarts.init(canvas, null, {
+      width: width,
+      height: height,
+      canvasId: 'echartCanvas'
+    });
+    canvas.setChart(chart1);
+    this.chart1 = chart1
+    var option = {
+      color: ['#37a2da', '#32c5e9', '#67e0e3'],
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: { // 坐标轴指示器，坐标轴触发有效
+          type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+        }
+      },
+      legend: {
+        data: ['热度', '正面', '负面']
+      },
+      grid: {
+        left: 20,
+        right: 20,
+        bottom: 15,
+        top: 40,
+        containLabel: true
+      },
+      xAxis: [{
+        type: 'value',
+        axisLine: {
+          lineStyle: {
+            color: '#999'
+          }
+        },
+        axisLabel: {
+          color: '#666'
+        }
+      }],
+      yAxis: [{
+        type: 'category',
+        axisTick: {
+          show: false
+        },
+        data: ['汽车之家', '今日头条', '百度贴吧', '一点资讯', '微信', '微博', '知乎'],
+        axisLine: {
+          lineStyle: {
+            color: '#999'
+          }
+        },
+        axisLabel: {
+          color: '#666'
+        }
+      }],
+      series: [{
+          name: '热度',
+          type: 'bar',
+          label: {
+            normal: {
+              show: true,
+              position: 'inside'
+            }
+          },
+          data: [300, 270, 340, 344, 300, 320, 310],
+          itemStyle: {
+            // emphasis: {
+            //   color: '#37a2da'
+            // }
+          }
+        },
+        {
+          name: '正面',
+          type: 'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true
+            }
+          },
+          data: [120, 102, 141, 174, 190, 250, 220],
+          itemStyle: {
+            // emphasis: {
+            //   color: '#32c5e9'
+            // }
+          }
+        },
+        {
+          name: '负面',
+          type: 'bar',
+          stack: '总量',
+          label: {
+            normal: {
+              show: true,
+              position: 'left'
+            }
+          },
+          data: [-20, -32, -21, -34, -90, -130, -110],
+          itemStyle: {
+            // emphasis: {
+            //   color: '#67e0e3'
+            // }
+          }
+        }
+      ]
+    };
+
+    chart1.setOption(option);
+    return chart1;
+  }
 })

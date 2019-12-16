@@ -22,8 +22,8 @@
   <view class="at-center">
     <view class="card-bgcolor at-center">
       <!-- <cover-view>放图表</cover-view> -->
-      <view class="container">
-        <canvas canvas-id="chartCanvas" class="canvas" style="height:500px;" bindtouchstart="touchHandler1"></canvas>
+      <view class="container" style="vertical-align: middle;">
+        <canvas canvas-id="lineCanvas" class="canvas" style="width:300px;height:250px;margin: 50rpx 60rpx 20rpx 20rpx;" bindtouchstart="touchHandler1"></canvas>
       </view>
     </view>
   </view>
@@ -35,8 +35,16 @@
     <text class="cuIcon-title text-green"></text>今天你吃了啥
   </view>
 </view>
-<view class="padding bg-white">
-  <view>放图表</view>
+<view class="card-under-bgcolor">
+  <view class="at-center">
+    <view class="card-bgcolor at-center">
+      <!-- <cover-view>放图表</cover-view> -->
+      <view class="container" style="vertical-align: middle;">
+        <canvas canvas-id="chartCanvas" class="canvas" style="width:300px;height:300px;padding: 10px 60px 10px 30px;" bindtouchstart="touchHandler1"></canvas>
+      </view>
+    </view>
+  </view>
+  <view class="margin-white"></view>
 </view>
 
 
@@ -80,7 +88,7 @@
   </view>
   <view class="action add-action" bindtap="NavChange" data-cur="shot">
     <button class="cu-btn cuIcon-add bg-green shadow"></button>
-      上传
+    上传
   </view>
   <view class="action" bindtap="NavChange" data-cur="my">
     <view class='cuIcon-cu-image'>
