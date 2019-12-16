@@ -40,7 +40,6 @@ Page({
     this.setData({
       PageCur: 'analysis'
     })
-    console.log("onload")
     var that = this;
     var _this = this
     var endtimestamp = Date.parse(new Date());
@@ -121,7 +120,7 @@ Page({
           for (var i = 0; i < keys.length; i++) {
             todayRatio.push({
               name: keys[i],
-              ratio: values[i]
+              data: values[i]
             })
             arr.push({
               name: keys[i],
@@ -131,11 +130,11 @@ Page({
           //实际记得注释
           todayRatio.push({
             name: "热干面",
-            data: 680
+            data: 0.2
           })
           todayRatio.push({
             name: "西红柿鸡蛋炒面",
-            data: 1300
+            data: 0.3
           })
           console.log(todayRatio)
           chart = new wxCharts({
@@ -150,15 +149,12 @@ Page({
           that.setData({
             todayRatio: todayRatio
           })
-
-          console.log(that.data.todayRatio.length)
           //准备图表数据 + 求最大、最小占比的食物
           var max_food = that.data.todayRatio[0].name
           var max_ratio = that.data.todayRatio[0].ratio
           var min_food = that.data.todayRatio[0].name
           var min_ratio = that.data.todayRatio[0].ratio
           for (var i = 0; i < that.data.todayRatio.length; i++) {
-            console.log("1")
             //求最大、最小占比的食物
             var ratiof = that.data.todayRatio[i]
             if (ratiof.ratio > max_ratio) {
@@ -198,7 +194,6 @@ Page({
           realDataArray.push(periodData[i].calories)
           time_categories.push(periodData[i].time.substr(5, 5))
         }
-        console.log(realDataArray)
         var expectationData = that.createSimulationData();
         console.log(time_categories)
         lineChart = new wxCharts({
@@ -211,21 +206,21 @@ Page({
             // data: realDataArray,
             data: realDataArray,
             format: function (val, name) {
-              return val.toFixed(2) + '万';
+              return val.toFixed(2) + '卡';
             }
           },
           {
             name: '建议摄入量',
-            data: [5000, 5000, 5500, 5600, 5700, 5800, 5900],
+            data: [1800, 1900, 1800, 1800, 1850, 1700, 1900],
             format: function (val, name) {
-              return (val + 3).toFixed(2) + '万';
+              return (val + 3).toFixed(2) + '卡';
             }
           }],
           xAxis: {
             disableGrid: false
           },
           yAxis: {
-            title: '摄入热量 (千卡)',
+            title: '摄入热量 (卡)',
             format: function (val) {
               return val.toFixed(2);
             },
@@ -251,7 +246,6 @@ Page({
         onInit: this.initChart
       },
     })
-    console.log(chart1)
   },
 
   NavChange(e) {

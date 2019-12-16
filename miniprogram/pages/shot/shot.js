@@ -169,7 +169,7 @@ confirm:function(){
       openId:app.globalData.openId,        //需传入用户openid
       reqParam: {
         name: this.data.userDish,
-        time: timestamp,
+        time: timestamp + 24 * 60 * 60 * 1000,
         calories: this.data.userCal,
         weight: this.data.dishWeight,
       }
