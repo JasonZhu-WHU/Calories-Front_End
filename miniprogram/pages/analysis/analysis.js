@@ -53,32 +53,7 @@ Page({
     });
     // this.drawPieDiagram()
     var _this = this
-
-    //祝捷：我觉得这个没必要，因为反正启动的时候会get到Steps的，从全局区取就完了
-    //获取当日步数
-    // wx.request({
-    //   url: 'https://csquare.wang/steps/daily',
-    //   method: 'GET',
-    //   data: {
-    //     "openId": app.globalData.openId, //需传入用户openId
-    //     "startTime": _this.data.starttime,
-    //     "endTime": _this.data.endtime
-    //   },
-    //   header: {
-    //     'content-type': 'application/json'
-    //   },
-    //   success(res) {
-    //     if (res.data.success == true) {
-    //       that.setData({
-    //         todayStep: res.data.resData[res.data.resData.length - 1].steps
-    //       })
-    //       console.log("今日步数：" + that.data.todayStep)
-    //     }
-    //   }
-    // })
-
-    // var steps = app.globalData.steps;
-    var steps = 7500;
+    var steps = app.globalData.step;
     
     console.log(app.globalData)
     var steps_score = this.calculateStepScore(steps);
@@ -302,22 +277,6 @@ Page({
         url: '/pages/home/home',
       })
     }
-  },
-
-  //云函数获取步数
-  getYourSteps(e) {
-    var cloudID = e.detail.cloudID;
-    console.log("ssssss");
-    wx.cloud.callFunction({ //想拿获取手机号的信息，需要在按钮getPhoneNumber的回调函数里面获取云函数
-      name: 'getSteps',
-      data: {
-        weRunData: wx.cloud.CloudID(cloudID), // 这个 CloudID 值到云函数端会被替换
-      },
-      success: res => {
-        app.globalData.step = res
-        console.log(app.globalData.step);
-      }
-    })
   },
 
   drawPieDiagram: function() {

@@ -158,6 +158,22 @@ Page({
     }
   },
 
+  //云函数获取步数
+  getYourSteps(e) {
+    var cloudID = e.detail.cloudID;
+    console.log("ssssss");
+    wx.cloud.callFunction({ //想拿获取手机号的信息，需要在按钮getPhoneNumber的回调函数里面获取云函数
+      name: 'getSteps',
+      data: {
+        weRunData: wx.cloud.CloudID(cloudID), // 这个 CloudID 值到云函数端会被替换
+      },
+      success: res => {
+        app.globalData.step = res
+        console.log(app.globalData.step);
+      }
+    })
+  },
+
   getPieChartData(){
     var starttimestamp = Date.parse(new Date());
     var that = this;

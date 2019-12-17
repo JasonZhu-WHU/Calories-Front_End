@@ -33,7 +33,8 @@ Page({
       PageCur: 'my',
       todayCalories:app.globalData.todayCalories,
       name:app.globalData.userInfo.nickName,
-      profile: app.globalData.userInfo.avatarUrl
+      profile: app.globalData.userInfo.avatarUrl,
+      todaySteps: app.globalData.step
     })
 
     //计算BMI
