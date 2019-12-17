@@ -1,12 +1,12 @@
 const app = getApp()
-
 Page({
   data: {
     PageCur: 'shot',
     //判断小程序的API，回调，参数，组件等是否在当前版本可用。
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     isHide: false,
-
+    weRunData:"",
+    shareInfo:"",
     pieChartData: null,
     histogramData: null
   },
@@ -73,6 +73,34 @@ Page({
                       console.log(res)
                     }
                   })
+
+                  wx.login({
+                    success: function () {
+                      wx.getWeRunData({
+                        success(res) {
+                          app.globalData.mycloudId = res.cloudID;
+                          console.log("success:" + app.globalData.mycloudId);
+                          wx.cloud.callFunction({
+                            name: 'getSteps',
+                            data: {
+                              weRunData: wx.cloud.CloudID(app.globalData.mycloudId), // 这个 CloudID 值到云函数端会被替换
+                              obj: {
+                                shareInfo: wx.cloud.CloudID(app.globalData.mycloudId), // 非顶层字段的 CloudID 不会被替换，会原样字符串展示
+                              }
+                            }
+                          }).then(res => {
+                            console.log(res);
+                            app.globalData.step = res.result.weRunData.data.stepInfoList[30].step;
+                            console.log("步数"+app.globalData.step);
+                          })
+                        }, fail() {
+                          console.log("fail");
+                        }
+                      })
+                    }, fail() {
+                      console.log("失败");
+                    }
+                  })           
                 }
               });
             }

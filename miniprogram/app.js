@@ -45,6 +45,8 @@ App({
     openId: '',
     statusBarHeight: wx.getSystemInfoSync()['statusBarHeight'],
     imgBase: 'cloud://csapp-ad9iq.6373-csapp-ad9iq-1300859845',
+    step:0,
+    mycloudId:"",
     windowHeight:0,
     windowWidth:0,
     userHeight:0,
