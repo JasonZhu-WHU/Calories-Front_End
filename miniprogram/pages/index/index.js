@@ -114,6 +114,7 @@ Page({
         }
       }
     });
+
     wx.request({
       url: 'https://csquare.wang/user',
       method: 'GET',
@@ -134,27 +135,6 @@ Page({
     app.globalData.endtime = endtimestamp + 8 * 60 * 60 * 1000
 
     var _this = this
-
-    //获取当日步数
-    wx.request({
-      url: 'https://csquare.wang/steps/daily',
-      method: 'GET',
-      data: {
-        "openId": app.globalData.openId, //需传入用户openId
-        "startTime": app.globalData.starttime,
-        "endTime": app.globalData.endtime
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        console.log(res.data)
-        if (res.data.success == true) {
-          app.globalData.todaySteps = res.data.resData[res.data.resData.length - 1].steps
-          console.log("今日步数：" + app.globalData.todaySteps)
-        }
-      }
-    })
 
     //获取当日卡路里
     wx.request({

@@ -29,15 +29,37 @@ Page({
   },
 
   onLoad(options) {
+    wx.getSetting({
+      success: res => {
+        if (res.authSetting['scope.userInfo']) {
+          // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
+          wx.getUserInfo({
+            success: res => {
+              // 可以将 res 发送给后台解码出 unionId
+              console.log(res)
+              app.globalData.userInfo = res.userInfo
+              this.setData({
+                PageCur: 'my',
+                todayCalories: app.globalData.todayCalories,
+                name: app.globalData.userInfo.nickName,
+                profile: app.globalData.userInfo.avatarUrl,
+                todaySteps: app.globalData.step
+              })
+
+              if (app.userInfoReadyCallback) {
+                app.userInfoReadyCallback(res)
+              }
+            }
+          })
+        }
+      }
+    })
+
     this.setData({
       PageCur: 'my',
       todayCalories:app.globalData.todayCalories,
-      name:app.globalData.userInfo.nickName,
-      profile: app.globalData.userInfo.avatarUrl,
-      todaySteps:app.globalData.todaySteps
+      todaySteps:app.globalData.step
     })
-
-    console.log(this.data.todaySteps)
     //计算BMI
     let bmi = 0;
     let height = app.globalData.userHeight / 100;
@@ -47,8 +69,8 @@ Page({
     })
     
     this.setData({
-      name: app.globalData.userInfo.nickName,
-      profile: app.globalData.userInfo.avatarUrl
+      //name: app.globalData.userInfo.nickName,
+      //profile: app.globalData.userInfo.avatarUrl
     })
   },
 
@@ -60,9 +82,9 @@ Page({
       data: {
         openId: app.globalData.openId,        //需传入用户openid
         reqParam: {
-          name: app.globalData.userInfo.nickName,
-          sex: app.globalData.userInfo.gender,
-          profile: app.globalData.userInfo.avatarUrl,
+          //name: app.globalData.userInfo.nickName,
+          //sex: app.globalData.userInfo.gender,
+          //profile: app.globalData.userInfo.avatarUrl,
           height: app.globalData.userHeight,
           weight: app.globalData.userWeight,
           bmi: this.data.bmi,
@@ -85,9 +107,9 @@ Page({
       success(res) {
         console.log(res)
         that.setData({
-          name: res.data.resData.name,
-          sex: res.data.resData.sex,
-          profile: res.data.resData.profile,
+          //name: res.data.resData.name,
+          //sex: res.data.resData.sex,
+          //profile: res.data.resData.profile,
           height: res.data.resData.height,
           weight: res.data.resData.weight,
           bmi: res.data.resData.bmi.toFixed(2),

@@ -55,7 +55,6 @@ App({
     todayCalories:0,
     starttime: 0,
     endtime: 0,
-    todaySteps: 0,
     bmi: 0,
     requestHost: 'https://csquare.wang', //记得更新服务器url
     ColorList: [{
