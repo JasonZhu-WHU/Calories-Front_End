@@ -29,6 +29,7 @@ Page({
   },
 
   onLoad(options) {
+    console.log(app.globalData.todayCalories)
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
@@ -37,6 +38,7 @@ Page({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
               console.log(res)
+              console.log(app.globalData)
               app.globalData.userInfo = res.userInfo
               this.setData({
                 PageCur: 'my',

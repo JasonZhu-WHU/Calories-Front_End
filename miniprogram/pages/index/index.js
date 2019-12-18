@@ -68,6 +68,7 @@ Page({
                     success(res) {
                       console.log(res.data.openid)
                       app.globalData.openId = res.data.openid
+                      that.setTodayCalories()
                     },
                     fail(res) {
                       console.log(res)
@@ -129,10 +130,10 @@ Page({
         app.globalData.bmi = res.data.resData.bmi.toFixed(2)
       }
     })
-    var endtimestamp = Date.parse(new Date());
+    var endtimestamp = Date.parse(new Date()) + 24 * 60 * 60 * 1000;
     var starttimestamp = endtimestamp - 24 * 60 * 60 * 1000;
-    app.globalData.starttime = starttimestamp + 8 * 60 * 60 * 1000
-    app.globalData.endtime = endtimestamp + 8 * 60 * 60 * 1000
+    app.globalData.starttime = starttimestamp
+    app.globalData.endtime = endtimestamp
 
     var _this = this
 
@@ -314,8 +315,33 @@ Page({
     })
   },
 
-  //这里到底是要画一个推荐的和实际的卡路里摄入histogram么
-  getHistogramData() {
-    
+  setTodayCalories: function(){
+    var endtimestamp = Date.parse(new Date()) + 24 * 60 * 60 * 1000;
+    var starttimestamp = endtimestamp
+
+    wx.request({
+      url: 'https://csquare.wang/food/daily',
+      method: 'GET',
+      data: {
+        "openId": app.globalData.openId, //需传入用户openId
+        "startTime": starttimestamp - 5 * 24 * 60 * 60 * 1000,
+        "endTime": endtimestamp + 24 * 60 * 60 * 1000,
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res) {
+        console.log(res.data)
+        var realDataArray = [];
+        var periodData = res.data.resData;
+        var time_categories = [];
+        for (var i = 0; i < periodData.length; i++) {
+          realDataArray.push(periodData[i].calories)
+          time_categories.push(periodData[i].time.substr(5, 5))
+        }
+        app.globalData.todayCalories = periodData[periodData.length - 2].calories
+        console.log(app.globalData.todayCalories)
+      }
+    })
   }
 })

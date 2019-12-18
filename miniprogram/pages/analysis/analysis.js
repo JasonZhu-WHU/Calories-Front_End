@@ -71,7 +71,6 @@ Page({
       todayCalories: app.globalData.todayCalories
     })
 
-    calories_score = that.calculateCaloriesScore(app.globalData.todayCalories)
 
     //获取当日食物占比 画图表
     wx.request({
@@ -188,6 +187,9 @@ Page({
           realDataArray.push(periodData[i].calories)
           time_categories.push(periodData[i].time.substr(5, 5))
         }
+        app.globalData.todayCalories = periodData[periodData.length - 2].calories
+        console.log(app.globalData.todayCalories)
+        calories_score = that.calculateCaloriesScore(app.globalData.todayCalories)
         var expectationData = that.createSimulationData();
         console.log(time_categories)
         lineChart = new wxCharts({
