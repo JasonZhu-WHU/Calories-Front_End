@@ -55,21 +55,21 @@ Page({
                   //获取用户openid 虽然我觉得传secret会被微信暴打
                   wx.request({
                     url: 'https://csquare.wang/openid',
-                    data:{
+                    data: {
                       "appid": "wxfdbdf9572f3ae678",
                       "secret": "5fecb5d7093bb4a17d7d77cb19cf37a2",
                       "js_code": res.code,
                       "grant_type": "authorization_code"
                     },
-                    header:{
+                    header: {
                       'content_type': "application/json"
                     },
                     method: "GET",
-                    success(res){
+                    success(res) {
                       console.log(res.data.openid)
                       app.globalData.openId = res.data.openid
                     },
-                    fail(res){
+                    fail(res) {
                       console.log(res)
                     }
                   })
@@ -91,7 +91,7 @@ Page({
                           }).then(res => {
                             console.log(res);
                             app.globalData.step = res.result.weRunData.data.stepInfoList[30].step;
-                            console.log("步数"+app.globalData.step);
+                            console.log("步数" + app.globalData.step);
                           })
                         }, fail() {
                           console.log("fail");
@@ -100,7 +100,7 @@ Page({
                     }, fail() {
                       console.log("失败");
                     }
-                  })           
+                  })
                 }
               });
             }
@@ -140,6 +140,80 @@ Page({
       //授权成功后,通过改变 isHide 的值，让实现页面显示出来，把授权页面隐藏起来
       that.setData({
         isHide: false
+      });
+      wx.getSetting({
+        success: function (res) {
+          if (res.authSetting['scope.userInfo']) {
+            wx.getUserInfo({
+              success: function (res) {
+                // 用户已经授权过,不需要显示授权页面,所以不需要改变 isHide 的值
+                // 根据自己的需求有其他操作再补充
+                // 我这里实现的是在用户授权成功后，调用微信的 wx.login 接口，从而获取code
+                wx.login({
+                  success: res => {
+                    // 获取到用户的 code 之后：res.code
+                    console.log("用户的code:" + res.code);
+                    //获取用户openid 虽然我觉得传secret会被微信暴打
+                    wx.request({
+                      url: 'https://csquare.wang/openid',
+                      data: {
+                        "appid": "wxfdbdf9572f3ae678",
+                        "secret": "5fecb5d7093bb4a17d7d77cb19cf37a2",
+                        "js_code": res.code,
+                        "grant_type": "authorization_code"
+                      },
+                      header: {
+                        'content_type': "application/json"
+                      },
+                      method: "GET",
+                      success(res) {
+                        console.log(res.data.openid)
+                        app.globalData.openId = res.data.openid
+                      },
+                      fail(res) {
+                        console.log(res)
+                      }
+                    })
+
+                    wx.login({
+                      success: function () {
+                        wx.getWeRunData({
+                          success(res) {
+                            app.globalData.mycloudId = res.cloudID;
+                            console.log("success:" + app.globalData.mycloudId);
+                            wx.cloud.callFunction({
+                              name: 'getSteps',
+                              data: {
+                                weRunData: wx.cloud.CloudID(app.globalData.mycloudId), // 这个 CloudID 值到云函数端会被替换
+                                obj: {
+                                  shareInfo: wx.cloud.CloudID(app.globalData.mycloudId), // 非顶层字段的 CloudID 不会被替换，会原样字符串展示
+                                }
+                              }
+                            }).then(res => {
+                              console.log(res);
+                              app.globalData.step = res.result.weRunData.data.stepInfoList[30].step;
+                              console.log("步数" + app.globalData.step);
+                            })
+                          }, fail() {
+                            console.log("fail");
+                          }
+                        })
+                      }, fail() {
+                        console.log("失败");
+                      }
+                    })
+                  }
+                });
+              }
+            });
+          } else {
+            // 用户没有授权
+            // 改变 isHide 的值，显示授权页面
+            that.setData({
+              isHide: true
+            });
+          }
+        }
       });
     } else {
       //用户按了拒绝按钮

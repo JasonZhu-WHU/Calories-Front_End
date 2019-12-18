@@ -48,8 +48,8 @@ Page({
     var endtimestamp = Date.parse(new Date());
     var starttimestamp = endtimestamp - 24 * 60 * 60 * 1000;
     _this.setData({
-      starttime: starttimestamp + 8 * 60 * 60 * 1000,
-      endtime: endtimestamp + 8 * 60 * 60 * 1000
+      starttime: starttimestamp + 24 * 60 * 60 * 1000,
+      endtime: endtimestamp + 24 * 60 * 60 * 1000
     });
     // this.drawPieDiagram()
     var _this = this
