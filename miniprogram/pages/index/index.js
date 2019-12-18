@@ -128,6 +128,53 @@ Page({
         app.globalData.bmi = res.data.resData.bmi.toFixed(2)
       }
     })
+    var endtimestamp = Date.parse(new Date());
+    var starttimestamp = endtimestamp - 24 * 60 * 60 * 1000;
+    app.globalData.starttime = starttimestamp + 8 * 60 * 60 * 1000
+    app.globalData.endtime = endtimestamp + 8 * 60 * 60 * 1000
+
+    var _this = this
+
+    //获取当日步数
+    wx.request({
+      url: 'https://csquare.wang/steps/daily',
+      method: 'GET',
+      data: {
+        "openId": app.globalData.openId, //需传入用户openId
+        "startTime": app.globalData.starttime,
+        "endTime": app.globalData.endtime
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res) {
+        console.log(res.data)
+        if (res.data.success == true) {
+          app.globalData.todaySteps = res.data.resData[res.data.resData.length - 1].steps
+          console.log("今日步数：" + app.globalData.todaySteps)
+        }
+      }
+    })
+
+    //获取当日卡路里
+    wx.request({
+      url: 'https://csquare.wang/food/daily',
+      method: 'GET',
+      data: {
+        "openId": app.globalData.openId, //需传入用户openId
+        "startTime": app.globalData.starttime,
+        "endTime": app.globalData.endtime
+      },
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res) {
+        console.log(res.data)
+        if (res.data.success == true) {
+          app.globalData.todayCalories = res.data.resData[res.data.resData.length - 1].calories
+        }
+      }
+    })
   },
 
   bindGetUserInfo: function (e) {

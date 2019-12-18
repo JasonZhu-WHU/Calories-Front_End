@@ -63,30 +63,15 @@ Page({
     console.log(calories_score)
     console.log(BMI_score)
 
-    //获取当日卡路里
-    wx.request({
-      url: 'https://csquare.wang/food/daily',
-      method: 'GET',
-      data: {
-        "openId": app.globalData.openId, //需传入用户openId
-        "startTime": _this.data.starttime,
-        "endTime": _this.data.endtime
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        console.log(res.data)
-        var todayCalories = res.data.resData[res.data.resData.length - 1].calories
-        if (res.data.success == true) {
-          that.setData({
-            todayCalories: todayCalories
-          })
-          app.globalData.todayCalories = todayCalories
-        }
-        calories_score = that.calculateCaloriesScore(todayCalories);
-      }
+    _this.setData({
+      todayStep: app.globalData.todayStep
     })
+
+    _this.setData({
+      todayCalories: app.globalData.todayCalories
+    })
+
+    calories_score = that.calculateCaloriesScore(app.globalData.todayCalories)
 
     //获取当日食物占比 画图表
     wx.request({
