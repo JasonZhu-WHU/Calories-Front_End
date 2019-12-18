@@ -33,9 +33,11 @@ Page({
       PageCur: 'my',
       todayCalories:app.globalData.todayCalories,
       name:app.globalData.userInfo.nickName,
-      profile: app.globalData.userInfo.avatarUrl
+      profile: app.globalData.userInfo.avatarUrl,
+      todaySteps:app.globalData.todaySteps
     })
 
+    console.log(this.data.todaySteps)
     //计算BMI
     let bmi = 0;
     let height = app.globalData.userHeight / 100;

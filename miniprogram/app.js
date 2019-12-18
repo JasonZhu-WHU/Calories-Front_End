@@ -45,12 +45,18 @@ App({
     openId: '',
     statusBarHeight: wx.getSystemInfoSync()['statusBarHeight'],
     imgBase: 'cloud://csapp-ad9iq.6373-csapp-ad9iq-1300859845',
+    step:0,
+    mycloudId:"",
     windowHeight:0,
     windowWidth:0,
     userHeight:0,
     userWeight:0,
     userInfo: null, 
     todayCalories:0,
+    starttime: 0,
+    endtime: 0,
+    todaySteps: 0,
+    bmi: 0,
     requestHost: 'https://csquare.wang', //记得更新服务器url
     ColorList: [{
       title: '嫣红',
