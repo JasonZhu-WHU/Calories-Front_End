@@ -7,10 +7,10 @@
  
 }
 .btn{
- 
+ z-index: 999;
  width:60%;
   height: 53%;
-  
+  border-radius: 0;
 }
 #camara{
   display: flex;
