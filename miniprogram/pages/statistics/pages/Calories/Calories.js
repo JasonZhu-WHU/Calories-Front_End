@@ -403,11 +403,6 @@ Page({
         complete: res => {
           wx.hideLoading()
         }
-        wx.showToast({
-          title: '开发中，敬请期待',
-          icon: "none",
-          duration: 2000,
-        })
       }
     }
   },

@@ -12,29 +12,46 @@ Page({
   },
 
   NavChange(e) {
-    this.setData({
-      PageCur: e.currentTarget.dataset.cur
-    })
     console.log(e.currentTarget.dataset.cur)
     if (e.currentTarget.dataset.cur == "analysis") {
-      wx.redirectTo({
-        url: '/pages/analysis/analysis',
-      })
+      if(app.globalData.loginSuccess && app.globalData.wechatStepsAuthorizationSuccess){
+        wx.redirectTo({
+          url: '/pages/analysis/analysis',
+        })
+        this.setData({
+          PageCur: e.currentTarget.dataset.cur
+        })
+      }
+      else{
+        wx.showToast({
+          title: '请先在我的页面中授权登录',
+          icon: 'none',
+          duration: 3000
+        })
+      }
     }
     else if (e.currentTarget.dataset.cur == "shot") {
       wx.redirectTo({
         url: '/pages/shot/shot',
+      })
+      this.setData({
+        PageCur: e.currentTarget.dataset.cur
       })
     }
     else {
       wx.redirectTo({
         url: '/pages/home/home',
       })
+      this.setData({
+        PageCur: e.currentTarget.dataset.cur
+      })
     }
   },
 
-
   onLoad: function () {
+    wx.redirectTo({
+      url: '/pages/shot/shot',
+    })
     this.setData({
       PageCur: 'shot'
     })
@@ -48,6 +65,7 @@ Page({
               // 用户已经授权过,不需要显示授权页面,所以不需要改变 isHide 的值
               // 根据自己的需求有其他操作再补充
               // 我这里实现的是在用户授权成功后，调用微信的 wx.login 接口，从而获取code
+              app.globalData.loginSuccess = true
               wx.login({
                 success: res => {
                   // 获取到用户的 code 之后：res.code
@@ -79,6 +97,7 @@ Page({
                     success: function () {
                       wx.getWeRunData({
                         success(res) {
+                          app.globalData.wechatStepsAuthorizationSuccess = true
                           app.globalData.mycloudId = res.cloudID;
                           console.log("success:" + app.globalData.mycloudId);
                           wx.cloud.callFunction({
@@ -108,14 +127,11 @@ Page({
           });
         } else {
           // 用户没有授权
-          // 改变 isHide 的值，显示授权页面
-          that.setData({
-            isHide: true
-          });
+          // 不改变任何的值
+          
         }
       }
     });
-
     wx.request({
       url: 'https://csquare.wang/user',
       method: 'GET',
@@ -154,163 +170,6 @@ Page({
         if (res.data.success == true) {
           app.globalData.todayCalories = res.data.resData[res.data.resData.length - 1].calories
         }
-      }
-    })
-  },
-
-  bindGetUserInfo: function (e) {
-    if (e.detail.userInfo) {
-      //用户按了允许授权按钮
-      var that = this;
-      // 获取到用户的信息了，打印到控制台上看下
-      console.log("用户的信息如下：");
-      console.log(e.detail.userInfo);
-      //授权成功后,通过改变 isHide 的值，让实现页面显示出来，把授权页面隐藏起来
-      that.setData({
-        isHide: false
-      });
-      wx.getSetting({
-        success: function (res) {
-          if (res.authSetting['scope.userInfo']) {
-            wx.getUserInfo({
-              success: function (res) {
-                // 用户已经授权过,不需要显示授权页面,所以不需要改变 isHide 的值
-                // 根据自己的需求有其他操作再补充
-                // 我这里实现的是在用户授权成功后，调用微信的 wx.login 接口，从而获取code
-                wx.login({
-                  success: res => {
-                    // 获取到用户的 code 之后：res.code
-                    console.log("用户的code:" + res.code);
-                    //获取用户openid 虽然我觉得传secret会被微信暴打
-                    wx.request({
-                      url: 'https://csquare.wang/openid',
-                      data: {
-                        "appid": "wxfdbdf9572f3ae678",
-                        "secret": "5fecb5d7093bb4a17d7d77cb19cf37a2",
-                        "js_code": res.code,
-                        "grant_type": "authorization_code"
-                      },
-                      header: {
-                        'content_type': "application/json"
-                      },
-                      method: "GET",
-                      success(res) {
-                        console.log(res.data.openid)
-                        app.globalData.openId = res.data.openid
-                      },
-                      fail(res) {
-                        console.log(res)
-                      }
-                    })
-
-                    wx.login({
-                      success: function () {
-                        wx.getWeRunData({
-                          success(res) {
-                            app.globalData.mycloudId = res.cloudID;
-                            console.log("success:" + app.globalData.mycloudId);
-                            wx.cloud.callFunction({
-                              name: 'getSteps',
-                              data: {
-                                weRunData: wx.cloud.CloudID(app.globalData.mycloudId), // 这个 CloudID 值到云函数端会被替换
-                                obj: {
-                                  shareInfo: wx.cloud.CloudID(app.globalData.mycloudId), // 非顶层字段的 CloudID 不会被替换，会原样字符串展示
-                                }
-                              }
-                            }).then(res => {
-                              console.log(res);
-                              app.globalData.step = res.result.weRunData.data.stepInfoList[30].step;
-                              console.log("步数" + app.globalData.step);
-                            })
-                          }, fail() {
-                            console.log("fail");
-                          }
-                        })
-                      }, fail() {
-                        console.log("失败");
-                      }
-                    })
-                  }
-                });
-              }
-            });
-          } else {
-            // 用户没有授权
-            // 改变 isHide 的值，显示授权页面
-            that.setData({
-              isHide: true
-            });
-          }
-        }
-      });
-    } else {
-      //用户按了拒绝按钮
-      wx.showModal({
-        title: '警告',
-        content: '您点击了拒绝授权，将无法进入小程序，请授权之后再进入!!!',
-        showCancel: false,
-        confirmText: '返回授权',
-        success: function (res) {
-          // 用户没有授权成功，不需要改变 isHide 的值
-          if (res.confirm) {
-            console.log('用户点击了“返回授权”');
-          }
-        }
-      });
-    }
-  },
-
-  //云函数获取步数
-  getYourSteps(e) {
-    var cloudID = e.detail.cloudID;
-    console.log("ssssss");
-    wx.cloud.callFunction({ //想拿获取手机号的信息，需要在按钮getPhoneNumber的回调函数里面获取云函数
-      name: 'getSteps',
-      data: {
-        weRunData: wx.cloud.CloudID(cloudID), // 这个 CloudID 值到云函数端会被替换
-      },
-      success: res => {
-        app.globalData.step = res
-        console.log(app.globalData.step);
-      }
-    })
-  },
-
-  getPieChartData(){
-    var starttimestamp = Date.parse(new Date());
-    var that = this;
-    //获取当日食物占比 画图表
-    wx.request({
-      url: 'https://csquare.wang/food/ratio',
-      method: 'GET',
-      data: {
-        openId: app.globalData.openid, //需传入用户openid
-        time: starttimestamp
-      },
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        console.log(res.data);
-        var todayRatio = res.data;
-        var food_array = [];
-        var ratio_array = [];
-
-        //准备今天吃了什么的图表数据
-        for (var i = 0; i < that.data.todayRatio.length; i++) {
-          var ratiof = that.data.todayRatio[i]
-          //准备图表需要的数据
-          food_array.push(ratiof.ratio)
-          ratio_array.push(ratiof.ratio)
-        }
-
-        //可能会有异步问题，最好promise重写
-        that.setData({
-          pieChartData:{
-            food_array: food_array,
-            ratio_array: ratio_array
-          }
-        })
       }
     })
   },

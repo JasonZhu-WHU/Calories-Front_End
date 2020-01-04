@@ -57,6 +57,8 @@ App({
     endtime: 0,
     bmi: 0,
     requestHost: 'https://csquare.wang', //记得更新服务器url
+    loginSuccess: false,
+    wechatStepsAuthorizationSuccess: false,
     ColorList: [{
       title: '嫣红',
       name: 'red',

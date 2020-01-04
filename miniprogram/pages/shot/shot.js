@@ -19,37 +19,44 @@ Page({
 
   },
   clickpics: function() {
-    var that = this;
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      success: function(res) {
-        // 无论用户是从相册选择还是直接用相机拍摄，路径都是在这里面
-        const file = res.tempFilePaths[0];
-        //将刚才选的照片/拍的 放到下面view视图中
-        that.setData({
-          carWin_img: file, //把照片路径存到变量中，
-          carWin_img_hidden: false, //让展示照片的view显示
-
-        });
-        wx.getFileSystemManager().readFile({
-          filePath: that.data.carWin_img, //选择图片返回的相对路径
-          encoding: 'base64', //编码格式
-          success: res => { //成功的回调
-            that.setData({
-              resultBase64ImageB: encodeURI(res.data)
-            });
-            console.log(that.data.resultBase64ImageB);
-            that.analysis();
-
-          }
-        })
-
-
-      }
-
-    })
-
+    if(app.globalData.wechatStepsAuthorizationSuccess && app.globalData.loginSuccess){
+      var that = this;
+      wx.chooseImage({
+        count: 1,
+        sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        success: function(res) {
+          // 无论用户是从相册选择还是直接用相机拍摄，路径都是在这里面
+          const file = res.tempFilePaths[0];
+          //将刚才选的照片/拍的 放到下面view视图中
+          that.setData({
+            carWin_img: file, //把照片路径存到变量中，
+            carWin_img_hidden: false, //让展示照片的view显示
+  
+          });
+          wx.getFileSystemManager().readFile({
+            filePath: that.data.carWin_img, //选择图片返回的相对路径
+            encoding: 'base64', //编码格式
+            success: res => { //成功的回调
+              that.setData({
+                resultBase64ImageB: encodeURI(res.data)
+              });
+              console.log(that.data.resultBase64ImageB);
+              that.analysis();
+  
+            }
+          })
+  
+  
+        }
+      })
+    }
+    else{
+      wx.showToast({
+        title: '请先在我的页面中授权登录',
+        icon: 'none',
+        duration: 3000
+      })
+    }
   },
   analysis: function() {
     //调用接口返回识别内容
@@ -224,21 +231,38 @@ Page({
   },
 
   NavChange(e) {
-    this.setData({
-      PageCur: e.currentTarget.dataset.cur
-    })
     console.log(e.currentTarget.dataset.cur)
     if (e.currentTarget.dataset.cur == "analysis") {
-      wx.redirectTo({
-        url: '/pages/analysis/analysis',
-      })
-    } else if (e.currentTarget.dataset.cur == "shot") {
+      if(app.globalData.loginSuccess && app.globalData.wechatStepsAuthorizationSuccess){
+        wx.redirectTo({
+          url: '/pages/analysis/analysis',
+        })
+        this.setData({
+          PageCur: e.currentTarget.dataset.cur
+        })
+      }
+      else{
+        wx.showToast({
+          title: '请先在我的页面中授权登录',
+          icon: 'none',
+          duration: 3000
+        })
+      }
+    }
+    else if (e.currentTarget.dataset.cur == "shot") {
       wx.redirectTo({
         url: '/pages/shot/shot',
       })
-    } else {
+      this.setData({
+        PageCur: e.currentTarget.dataset.cur
+      })
+    }
+    else {
       wx.redirectTo({
         url: '/pages/home/home',
+      })
+      this.setData({
+        PageCur: e.currentTarget.dataset.cur
       })
     }
   },
